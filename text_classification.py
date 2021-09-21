@@ -26,14 +26,15 @@ def explore_sub_folders_count_files():
 def generate_pdf_distribution_of_instance_distribution():
     value_dict = explore_sub_folders_count_files()
     plt.plot(value_dict.keys(), value_dict.values())
-    return plt.savefig("./Output/BBC-distribution.pdf")
+    plt.savefig("./Output/BBC-distribution.pdf")
 
 # T1Q3, T1Q4
 # loading corpus, preprocessing data
 def preprocess_data():
     dataset = sklearn.datasets.load_files(dataset_folder, encoding="latin1")
     vectorizer = sklearn.feature_extraction.text.CountVectorizer(encoding="latin1")
-    preprocessed_dataset = vectorizer.fit_transform(dataset)
+    preprocessed_dataset = vectorizer.fit_transform(dataset['data'])
+    print(vectorizer.get_feature_names())
     return preprocessed_dataset
 
 
