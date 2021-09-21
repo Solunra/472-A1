@@ -21,12 +21,14 @@ def explore_sub_folders_count_files():
 
     return value_dict
 
+
 # T1Q2
 # Generates the PDF plot of the sub folder file count
 def generate_pdf_distribution_of_instance_distribution():
     value_dict = explore_sub_folders_count_files()
     plt.plot(value_dict.keys(), value_dict.values())
     plt.savefig("./Output/BBC-distribution.pdf")
+
 
 # T1Q3, T1Q4
 # loading corpus, preprocessing data
@@ -39,10 +41,10 @@ def preprocess_data():
 
 
 # T1Q5
-# splitting the set into train_set & test_sest
+# splitting the set into train_set & test_set
 def split_test_set():
     all_data = preprocess_data()
-    train_set, test_set = sklearn.model_selection.train_test_split(all_data, test_size=0.2, train_size = 0.8, random_state = None, shuffle = False, stratify = None)
+    train_set, test_set = sklearn.model_selection.train_test_split(all_data, test_size=0.2, train_size=0.8, random_state=None, shuffle=False, stratify=None)
     print("The current train set is:")
     print(train_set)
     print("The current test set is:")
