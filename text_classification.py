@@ -36,17 +36,22 @@ def preprocess_data():
     dataset = sklearn.datasets.load_files(dataset_folder, encoding="latin1")
     vectorizer = sklearn.feature_extraction.text.CountVectorizer(encoding="latin1")
     preprocessed_dataset = vectorizer.fit_transform(dataset['data'])
-    print(vectorizer.get_feature_names())
-    return preprocessed_dataset
+    return preprocessed_dataset, dataset.target
 
 
 # T1Q5
 # splitting the set into train_set & test_set
 def split_test_set():
-    all_data = preprocess_data()
-    train_set, test_set = sklearn.model_selection.train_test_split(all_data, test_size=0.2, train_size=0.8, random_state=None, shuffle=False, stratify=None)
-    print("The current train set is:")
-    print(train_set)
-    print("The current test set is:")
-    print(test_set)
-    return train_set, test_set
+    preprocessed_data, class_indices = preprocess_data()
+    train_set, test_set = sklearn.model_selection.train_test_split(preprocessed_data, train_size=0.8, test_size=0.2, random_state=None, shuffle=False, stratify=None)
+    return train_set, test_set, class_indices
+
+
+# T1Q6
+# train classifier with training set and use it on test set
+def nb_classifier():
+    train_set, test_set, class_indices = split_test_set()
+    clf = sklearn.naive_bayes.MultinomialNB()
+    clf.fit(train_set,class_indices)
+
+nb_classifier()
