@@ -3,7 +3,7 @@ import matplotlib
 import sklearn
 
 def main():
-    split_test_set = tc.preprocess_data()
+    split_test_set = tc.nb_classifier()
     # tc.generate_pdf_distribution_of_instance_distribution()
 
 

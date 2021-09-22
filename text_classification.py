@@ -5,6 +5,7 @@ import sklearn
 
 
 dataset_folder = "./Documents/BBC/"
+class_names = []
 
 
 # T1Q2
@@ -33,9 +34,11 @@ def generate_pdf_distribution_of_instance_distribution():
 # T1Q3, T1Q4
 # loading corpus, preprocessing data
 def preprocess_data():
+    global class_names
     dataset = sklearn.datasets.load_files(dataset_folder, encoding="latin1")
     vectorizer = sklearn.feature_extraction.text.CountVectorizer(encoding="latin1")
     preprocessed_dataset = vectorizer.fit_transform(dataset['data'])
+    class_names = dataset['target_names']
     return preprocessed_dataset, dataset.target
 
 
@@ -43,15 +46,23 @@ def preprocess_data():
 # splitting the set into train_set & test_set
 def split_test_set():
     preprocessed_data, class_indices = preprocess_data()
-    train_set, test_set = sklearn.model_selection.train_test_split(preprocessed_data, train_size=0.8, test_size=0.2, random_state=None, shuffle=False, stratify=None)
-    return train_set, test_set, class_indices
+    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(preprocessed_data, class_indices, train_size=0.8, test_size=0.2, random_state=None, shuffle=False, stratify=None)
+    return X_train, X_test, y_train, y_test
 
 
 # T1Q6
 # train classifier with training set and use it on test set
 def nb_classifier():
-    train_set, test_set, class_indices = split_test_set()
-    clf = sklearn.naive_bayes.MultinomialNB()
-    clf.fit(train_set,class_indices)
-
-nb_classifier()
+    counter = 0
+    X_train, X_test, y_train, y_test = split_test_set()
+    classifier = sklearn.naive_bayes.MultinomialNB()
+    classifier.fit(X_train, y_train)
+    for index in range(50):
+        predicted_index = classifier.predict(X_test[index])[0]
+        print("Predicted")
+        print(class_names[predicted_index])
+        print("Actual")
+        print(class_names[y_test[index]])
+        if predicted_index == y_test[index]:
+            counter += 1
+    print(counter)
