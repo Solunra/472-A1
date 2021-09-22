@@ -52,7 +52,7 @@ def split_test_set():
 
 # T1Q6
 # train classifier with training set and use it on test set
-def nb_classifier(alpha):
+def nb_classifier(alpha=1.0):
     counter = 0
     X_train, X_test, y_train, y_test = split_test_set()
     classifier = sklearn.naive_bayes.MultinomialNB(alpha=alpha)
@@ -66,3 +66,9 @@ def nb_classifier(alpha):
         if predicted_index == y_test[index]:
             counter += 1
     print(counter)
+
+
+def write_results_to_file():
+    with open("./Output/bbc-distribution.txt", "a") as f:
+        f.write("\(a\) ********MultinomialNB default values, try 1********\n")
+        f.close()
