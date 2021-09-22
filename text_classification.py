@@ -52,10 +52,10 @@ def split_test_set():
 
 # T1Q6
 # train classifier with training set and use it on test set
-def nb_classifier():
+def nb_classifier(alpha):
     counter = 0
     X_train, X_test, y_train, y_test = split_test_set()
-    classifier = sklearn.naive_bayes.MultinomialNB()
+    classifier = sklearn.naive_bayes.MultinomialNB(alpha=alpha)
     classifier.fit(X_train, y_train)
     for index in range(50):
         predicted_index = classifier.predict(X_test[index])[0]
