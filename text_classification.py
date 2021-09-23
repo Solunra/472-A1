@@ -92,4 +92,9 @@ def write_results_to_file():
         f.write(f'(d) accuracy score: {accuracy_score}\n'
                 f'    macro f1 score: {f1_score_macro}\n'
                 f'    weighted f1 score: {f1_score_weighted}\n')
+        f.write(f'logarithmic prior probability of classes 0 to {len(classifier.class_log_prior_)}: {classifier.class_log_prior_}')
+        f.write(f'(e) prior probability of:')
+        for index in range(len(classifier.class_log_prior_)):
+            f.write(f'    {class_names[index]}: {math.exp(classifier.class_log_prior_[index])}')
+            f.write(f'number of word-tokens: {preprocess_data()[0].sum()}')
         f.close()
