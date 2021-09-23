@@ -2,6 +2,7 @@ import os
 import matplotlib.pyplot as plt
 from sklearn import *
 import sklearn
+import math
 
 dataset_folder = "./Documents/BBC/"
 class_names = []
