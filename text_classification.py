@@ -97,5 +97,6 @@ def write_results_to_file():
         f.write(f'(e) prior probability of:')
         for index in range(len(classifier.class_log_prior_)):
             f.write(f'    {class_names[index]}: {math.exp(classifier.class_log_prior_[index])}')
-        f.write(f'number of word-tokens: {preprocessed_data.sum()}')
+        f.write(f'(f) size of the vocabulary: {preprocessed_data.shape[1]}')
+        f.write(f'(g) number of word-tokens: {preprocessed_data.sum()}')
         f.close()
