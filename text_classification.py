@@ -78,7 +78,7 @@ def nb_classifier(alpha=1.0):
 def write_results_to_file():
     with open("./Output/bbc-distribution.txt", "w") as f:
         f.write('(a) ********MultinomialNB default values, try 1********\n')
-        classifier, X_test, y_test = nb_classifier()
+        classifier, preprocessed_data, X_test, y_test = nb_classifier()
         predicted_y = classifier.predict(X_test)
         # row is predicted value, column is actual value
         # matrix values are what was predicted and what it is in count
@@ -97,5 +97,5 @@ def write_results_to_file():
         f.write(f'(e) prior probability of:')
         for index in range(len(classifier.class_log_prior_)):
             f.write(f'    {class_names[index]}: {math.exp(classifier.class_log_prior_[index])}')
-        f.write(f'number of word-tokens: {preprocess_data.sum()}')
+        f.write(f'number of word-tokens: {preprocessed_data.sum()}')
         f.close()
