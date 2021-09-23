@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from sklearn import *
 import sklearn
 
-
 dataset_folder = "./Documents/BBC/"
 class_names = []
 
@@ -39,6 +38,9 @@ def preprocess_data():
     vectorizer = sklearn.feature_extraction.text.CountVectorizer(encoding="latin1")
     preprocessed_dataset = vectorizer.fit_transform(dataset['data'])
     class_names = dataset['target_names']
+    # Returns document-term matrix
+    # (documents on the row header, words on the column header. The rest is frequency of each word for each document)
+    # and target labels' index where ['business', 'entertainment', 'politics', 'sport', 'tech'] = [0, 1, 2, 3, 4]
     return preprocessed_dataset, dataset.target
 
 
@@ -46,6 +48,8 @@ def preprocess_data():
 # splitting the set into train_set & test_set
 def split_test_set():
     preprocessed_data, class_indices = preprocess_data()
+    # the x list's values are the inputs with the y list's values being the output
+    # in this case, x are the document-term matrix and y are the class' index (see preprocess_data())
     X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(preprocessed_data, class_indices, train_size=0.8, test_size=0.2, random_state=None, shuffle=False, stratify=None)
     return X_train, X_test, y_train, y_test
 
@@ -57,18 +61,35 @@ def nb_classifier(alpha=1.0):
     X_train, X_test, y_train, y_test = split_test_set()
     classifier = sklearn.naive_bayes.MultinomialNB(alpha=alpha)
     classifier.fit(X_train, y_train)
-    for index in range(50):
-        predicted_index = classifier.predict(X_test[index])[0]
-        print("Predicted")
-        print(class_names[predicted_index])
-        print("Actual")
-        print(class_names[y_test[index]])
-        if predicted_index == y_test[index]:
-            counter += 1
-    print(counter)
+    return classifier, X_test, y_test
+    # for index in range(50):
+    #     predicted_index = classifier.predict(X_test[index])[0]
+    #     print("Predicted")
+    #     print(class_names[predicted_index])
+    #     print("Actual")
+    #     print(class_names[y_test[index]])
+    #     if predicted_index == y_test[index]:
+    #         counter += 1
+    # print(counter)
 
 
+#T1Q7
 def write_results_to_file():
-    with open("./Output/bbc-distribution.txt", "a") as f:
-        f.write("\(a\) ********MultinomialNB default values, try 1********\n")
+    with open("./Output/bbc-distribution.txt", "w") as f:
+        f.write('(a) ********MultinomialNB default values, try 1********\n')
+        classifier, X_test, y_test = nb_classifier()
+        predicted_y = classifier.predict(X_test)
+        # row is predicted value, column is actual value
+        # matrix values are what was predicted and what it is in count
+        confusion_matrix = sklearn.metrics.confusion_matrix(y_test, predicted_y)
+        f.write(f'(b)\n{confusion_matrix}\n')
+        classification_report = sklearn.metrics.classification_report(y_test, predicted_y, output_dict=True)
+        f.write(f'(c)\n{classification_report}\n')
+        accuracy_score = sklearn.metrics.accuracy_score(y_test, predicted_y)
+        #failed to add labels, it uses the index instead
+        f1_score_macro = sklearn.metrics.f1_score(y_test, predicted_y, average='macro')
+        f1_score_weighted = sklearn.metrics.f1_score(y_test, predicted_y, average='weighted')
+        f.write(f'(d) accuracy score: {accuracy_score}\n'
+                f'    macro f1 score: {f1_score_macro}\n'
+                f'    weighted f1 score: {f1_score_weighted}\n')
         f.close()
