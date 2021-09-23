@@ -52,17 +52,17 @@ def split_test_set():
     # the x list's values are the inputs with the y list's values being the output
     # in this case, x are the document-term matrix and y are the class' index (see preprocess_data())
     X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(preprocessed_data, class_indices, train_size=0.8, test_size=0.2, random_state=None, shuffle=False, stratify=None)
-    return X_train, X_test, y_train, y_test
+    return preprocessed_data, X_train, X_test, y_train, y_test
 
 
 # T1Q6
 # train classifier with training set and use it on test set
 def nb_classifier(alpha=1.0):
     counter = 0
-    X_train, X_test, y_train, y_test = split_test_set()
+    preprocessed_data, X_train, X_test, y_train, y_test = split_test_set()
     classifier = sklearn.naive_bayes.MultinomialNB(alpha=alpha)
     classifier.fit(X_train, y_train)
-    return classifier, X_test, y_test
+    return classifier, preprocessed_data, X_test, y_test
     # for index in range(50):
     #     predicted_index = classifier.predict(X_test[index])[0]
     #     print("Predicted")
@@ -97,5 +97,5 @@ def write_results_to_file():
         f.write(f'(e) prior probability of:')
         for index in range(len(classifier.class_log_prior_)):
             f.write(f'    {class_names[index]}: {math.exp(classifier.class_log_prior_[index])}')
-            f.write(f'number of word-tokens: {preprocess_data()[0].sum()}')
+        f.write(f'number of word-tokens: {preprocess_data.sum()}')
         f.close()
