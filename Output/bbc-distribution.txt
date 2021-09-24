@@ -13,11 +13,11 @@
 (e)
 logarithmic prior probability of classes 0 to 5: [-1.45609012 -1.7575209  -1.66725748 -1.47555546 -1.731796  ]
 prior probability of:
-    business: 0.2331460674157302
-    entertainment: 0.1724719101123595
-    politics: 0.18876404494382018
-    sport: 0.2286516853932583
-    tech: 0.17696629213483145
+    0: 0.2331460674157302
+    1: 0.1724719101123595
+    2: 0.18876404494382018
+    3: 0.2286516853932583
+    4: 0.17696629213483145
 (f) size of the vocabulary: 29421
 (g) for every class:
 class business has 133978 word-tokens

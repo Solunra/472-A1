@@ -85,26 +85,26 @@ def write_results_to_file():
                 f'    weighted f1 score: {f1_score_weighted}\n')
         f.write(f'(e)\nlogarithmic prior probability of classes 0 to {len(classifier.class_log_prior_)}: {classifier.class_log_prior_}\n')
         f.write(f'prior probability of:\n')
-        for index in range(len(classifier.classes_)):
-            f.write(f'    {class_names[index]}: {math.exp(classifier.class_log_prior_[index])}\n')
+
+        for index, class_ in enumerate(classifier.classes_):
+            f.write(f'    {class_}: {math.exp(classifier.class_log_prior_[index])}\n')
         f.write(f'(f) size of the vocabulary: {preprocessed_data.shape[1]}\n')
         # find the number of word-token, zero entries and non-zero for each class
         classes_num_words = [0] * len(classifier.classes_)
         classes_num_non_zero = [0] * len(classifier.classes_)
         classes_num_zero = [0] * len(classifier.classes_)
         f.write(f'(g) for every class:\n')
-        for index in range(len(y_train)):
-            class_ind = y_train[index]
-            classes_num_words[class_ind] += X_train[index].sum()
-            classes_num_non_zero[class_ind] += X_train[index].getnnz()
-            classes_num_zero[class_ind] += (X_train[index].getnnz() - X_train[index].count_nonzero())
+
+        for index, y_train_instance in enumerate(y_train):
+            classes_num_words[y_train_instance] += X_train[index].sum()
+            classes_num_non_zero[y_train_instance] += X_train[index].getnnz()
+            classes_num_zero[y_train_instance] += (X_train[index].getnnz() - X_train[index].count_nonzero())
         
-        for i in range(len(classes_num_words)):
-            f.write(f'class {class_names[i]} has {classes_num_words[i]} word-tokens\n')
+        for index, class_num_word in enumerate(classes_num_words):
+            f.write(f'class {class_names[index]} has {class_num_word} word-tokens\n')
 
         f.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}\n')
         
         f.write(f'(i) for every class:\n')
-        for i in range(len(classes_num_words)):
-            f.write(f'class {class_names[i]} has {classes_num_zero[i]} words that do not occur. It has a frequency of \'zero\' words of {classes_num_zero[i]/(classes_num_zero[i]+classes_num_non_zero[i])}\n')
-        f.close()
+        for index, _ in enumerate(classes_num_words):
+            f.write(f'class {class_names[index]} has {classes_num_zero[index]} words that do not occur. It has a frequency of \'zero\' words of {classes_num_zero[index]/(classes_num_zero[index]+classes_num_non_zero[index])}\n')
