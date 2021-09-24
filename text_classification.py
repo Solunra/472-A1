@@ -58,20 +58,10 @@ def split_test_set():
 # T1Q6
 # train classifier with training set and use it on test set
 def nb_classifier(alpha=1.0):
-    counter = 0
     preprocessed_data, X_train, X_test, y_train, y_test = split_test_set()
     classifier = sklearn.naive_bayes.MultinomialNB(alpha=alpha)
     classifier.fit(X_train, y_train)
     return classifier, preprocessed_data, X_train, X_test, y_train, y_test
-    # for index in range(50):
-    #     predicted_index = classifier.predict(X_test[index])[0]
-    #     print("Predicted")
-    #     print(class_names[predicted_index])
-    #     print("Actual")
-    #     print(class_names[y_test[index]])
-    #     if predicted_index == y_test[index]:
-    #         counter += 1
-    # print(counter)
 
 
 #T1Q7
@@ -87,22 +77,22 @@ def write_results_to_file():
         classification_report = sklearn.metrics.classification_report(y_test, predicted_y, output_dict=True)
         f.write(f'(c)\n{classification_report}\n')
         accuracy_score = sklearn.metrics.accuracy_score(y_test, predicted_y)
-        #failed to add labels, it uses the index instead
+        # failed to add labels, it uses the index instead
         f1_score_macro = sklearn.metrics.f1_score(y_test, predicted_y, average='macro')
         f1_score_weighted = sklearn.metrics.f1_score(y_test, predicted_y, average='weighted')
         f.write(f'(d) accuracy score: {accuracy_score}\n'
                 f'    macro f1 score: {f1_score_macro}\n'
                 f'    weighted f1 score: {f1_score_weighted}\n')
-        f.write(f'logarithmic prior probability of classes 0 to {len(classifier.class_log_prior_)}: {classifier.class_log_prior_}')
-        f.write(f'(e) prior probability of:')
+        f.write(f'(e)\nlogarithmic prior probability of classes 0 to {len(classifier.class_log_prior_)}: {classifier.class_log_prior_}\n')
+        f.write(f'prior probability of:\n')
         for index in range(len(classifier.classes_)):
-            f.write(f'    {class_names[index]}: {math.exp(classifier.class_log_prior_[index])}')
-        f.write(f'(f) size of the vocabulary: {preprocessed_data.shape[1]}')
+            f.write(f'    {class_names[index]}: {math.exp(classifier.class_log_prior_[index])}\n')
+        f.write(f'(f) size of the vocabulary: {preprocessed_data.shape[1]}\n')
         # find the number of word-token, zero entries and non-zero for each class
         classes_num_words = [0] * len(classifier.classes_)
         classes_num_non_zero = [0] * len(classifier.classes_)
         classes_num_zero = [0] * len(classifier.classes_)
-        f.write(f'(g) for every class:')
+        f.write(f'(g) for every class:\n')
         for index in range(len(y_train)):
             class_ind = y_train[index]
             classes_num_words[class_ind] += X_train[index].sum()
@@ -110,11 +100,11 @@ def write_results_to_file():
             classes_num_zero[class_ind] += (X_train[index].getnnz() - X_train[index].count_nonzero())
         
         for i in range(len(classes_num_words)):
-            f.write(f'class {class_names[i]} has {classes_num_words[i]} word-tokens')
+            f.write(f'class {class_names[i]} has {classes_num_words[i]} word-tokens\n')
 
-        f.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}')
+        f.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}\n')
         
-        f.write(f'(i) for every class:')
+        f.write(f'(i) for every class:\n')
         for i in range(len(classes_num_words)):
-            f.write(f'class {class_names[i]} has {classes_num_zero[i]} words that do not occur. It has a frequency of \'zero\' words of {classes_num_zero[i]/(classes_num_zero[i]+classes_num_non_zero[i])}')
+            f.write(f'class {class_names[i]} has {classes_num_zero[i]} words that do not occur. It has a frequency of \'zero\' words of {classes_num_zero[i]/(classes_num_zero[i]+classes_num_non_zero[i])}\n')
         f.close()

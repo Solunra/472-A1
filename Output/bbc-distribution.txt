@@ -10,3 +10,25 @@
 (d) accuracy score: 0.9707865168539326
     macro f1 score: 0.969498062215125
     weighted f1 score: 0.9707681818226471
+(e)
+logarithmic prior probability of classes 0 to 5: [-1.45609012 -1.7575209  -1.66725748 -1.47555546 -1.731796  ]
+prior probability of:
+    business: 0.2331460674157302
+    entertainment: 0.1724719101123595
+    politics: 0.18876404494382018
+    sport: 0.2286516853932583
+    tech: 0.17696629213483145
+(f) size of the vocabulary: 29421
+(g) for every class:
+class business has 133978 word-tokens
+class entertainment has 98906 word-tokens
+class politics has 151172 word-tokens
+class sport has 131164 word-tokens
+class tech has 156086 word-tokens
+(h) number of word-tokens in the entire corpus: 836357
+(i) for every class:
+class business has 0 words that do not occur. It has a frequency of 'zero' words of 0.0
+class entertainment has 0 words that do not occur. It has a frequency of 'zero' words of 0.0
+class politics has 0 words that do not occur. It has a frequency of 'zero' words of 0.0
+class sport has 0 words that do not occur. It has a frequency of 'zero' words of 0.0
+class tech has 0 words that do not occur. It has a frequency of 'zero' words of 0.0
