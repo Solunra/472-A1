@@ -95,8 +95,26 @@ def write_results_to_file():
                 f'    weighted f1 score: {f1_score_weighted}\n')
         f.write(f'logarithmic prior probability of classes 0 to {len(classifier.class_log_prior_)}: {classifier.class_log_prior_}')
         f.write(f'(e) prior probability of:')
-        for index in range(len(classifier.class_log_prior_)):
+        for index in range(len(classifier.classes_)):
             f.write(f'    {class_names[index]}: {math.exp(classifier.class_log_prior_[index])}')
         f.write(f'(f) size of the vocabulary: {preprocessed_data.shape[1]}')
-        f.write(f'(g) number of word-tokens: {preprocessed_data.sum()}')
+        # find the number of word-token, zero entries and non-zero for each class
+        classes_num_words = [0] * len(classifier.classes_)
+        classes_num_non_zero = [0] * len(classifier.classes_)
+        classes_num_zero = [0] * len(classifier.classes_)
+        f.write(f'(g) for every class:')
+        for index in range(len(y_test)):
+            class_ind = y_test[index]
+            classes_num_words[class_ind] += X_test[index].sum()
+            classes_num_non_zero[class_ind] += X_test[index].getnnz()
+            classes_num_zero[class_ind] += (X_test[index].getnnz() - X_test[index].count_nonzero())
+        
+        for i in range(len(classes_num_words)):
+            f.write(f'class {class_names[i]} has {classes_num_words[i]} word-tokens')
+
+        f.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}')
+        
+        f.write(f'(i) for every class:')
+        for i in range(len(classes_num_words)):
+            f.write(f'class {class_names[i]} has {classes_num_zero[i]} words that do not occur. It has a frequency of \'zero\' words of {classes_num_zero[i]/(classes_num_zero[i]+classes_num_non_zero[i])}')
         f.close()
