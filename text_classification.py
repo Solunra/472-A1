@@ -62,7 +62,7 @@ def nb_classifier(alpha=1.0):
     preprocessed_data, X_train, X_test, y_train, y_test = split_test_set()
     classifier = sklearn.naive_bayes.MultinomialNB(alpha=alpha)
     classifier.fit(X_train, y_train)
-    return classifier, preprocessed_data, X_test, y_test
+    return classifier, preprocessed_data, X_train, X_test, y_train, y_test
     # for index in range(50):
     #     predicted_index = classifier.predict(X_test[index])[0]
     #     print("Predicted")
@@ -78,7 +78,7 @@ def nb_classifier(alpha=1.0):
 def write_results_to_file():
     with open("./Output/bbc-distribution.txt", "w") as f:
         f.write('(a) ********MultinomialNB default values, try 1********\n')
-        classifier, preprocessed_data, X_test, y_test = nb_classifier()
+        classifier, preprocessed_data, X_train, X_test, y_train, y_test = nb_classifier()
         predicted_y = classifier.predict(X_test)
         # row is predicted value, column is actual value
         # matrix values are what was predicted and what it is in count
@@ -103,11 +103,11 @@ def write_results_to_file():
         classes_num_non_zero = [0] * len(classifier.classes_)
         classes_num_zero = [0] * len(classifier.classes_)
         f.write(f'(g) for every class:')
-        for index in range(len(y_test)):
-            class_ind = y_test[index]
-            classes_num_words[class_ind] += X_test[index].sum()
-            classes_num_non_zero[class_ind] += X_test[index].getnnz()
-            classes_num_zero[class_ind] += (X_test[index].getnnz() - X_test[index].count_nonzero())
+        for index in range(len(y_train)):
+            class_ind = y_train[index]
+            classes_num_words[class_ind] += X_train[index].sum()
+            classes_num_non_zero[class_ind] += X_train[index].getnnz()
+            classes_num_zero[class_ind] += (X_train[index].getnnz() - X_train[index].count_nonzero())
         
         for i in range(len(classes_num_words)):
             f.write(f'class {class_names[i]} has {classes_num_words[i]} word-tokens')
