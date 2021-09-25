@@ -89,16 +89,25 @@ def write_results_to_file():
         for index, class_ in enumerate(classifier.classes_):
             f.write(f'    {class_}: {math.exp(classifier.class_log_prior_[index])}\n')
         f.write(f'(f) size of the vocabulary: {preprocessed_data.shape[1]}\n')
+        
         # find the number of word-token, zero entries and non-zero for each class
         classes_num_words = [0] * len(classifier.classes_)
-        classes_num_non_zero = [0] * len(classifier.classes_)
-        classes_num_zero = [0] * len(classifier.classes_)
+        
+        # 2D array with length (num_of_classes, |V|). value of 0 if word doesn't appear in class, value of not 0 if word appears in class.
+        classes_word_appearance = []
+        for class_index in range(len(classifier.classes_)):
+            row = []
+            for word in range(X_train[0].shape[1]):
+                row.append(0)
+            classes_word_appearance[class_index].append(row)
+        
         f.write(f'(g) for every class:\n')
 
         for index, y_train_instance in enumerate(y_train):
             classes_num_words[y_train_instance] += X_train[index].sum()
-            classes_num_non_zero[y_train_instance] += X_train[index].getnnz()
-            classes_num_zero[y_train_instance] += (X_train[index].getnnz() - X_train[index].count_nonzero())
+
+            for word_index, word in X_train[index]:
+                classes_word_appearance[y_train_instance][word_index] = word
         
         for index, class_num_word in enumerate(classes_num_words):
             f.write(f'class {class_names[index]} has {class_num_word} word-tokens\n')
@@ -106,5 +115,4 @@ def write_results_to_file():
         f.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}\n')
         
         f.write(f'(i) for every class:\n')
-        for index, _ in enumerate(classes_num_words):
-            f.write(f'class {class_names[index]} has {classes_num_zero[index]} words that do not occur. It has a frequency of \'zero\' words of {classes_num_zero[index]/(classes_num_zero[index]+classes_num_non_zero[index])}\n')
+        # iterate thhrough classes_word_appearance for every class (1st dimension) and find the entries in the 2nd dimension with value 0
