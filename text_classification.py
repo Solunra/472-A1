@@ -95,9 +95,7 @@ def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_trai
         
         # 2D array with length (num_of_classes, |V|). value of 0 if word doesn't appear in class, value of not 0 if word appears in class.
         # initialising them here
-        classes_word_appearance = []
-        for class_ in classifier.classes_:
-            classes_word_appearance.append(np.zeros(shape=(1, vocabulary_size)))
+        classes_word_appearance = np.zeros(shape=(len(classifier.classes_),vocabulary_size))
 
         f.write(f'(g) for every class:\n')
 
