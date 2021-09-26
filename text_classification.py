@@ -65,7 +65,7 @@ def nb_classifier(X_train, y_train, alpha=1.0):
 
 #T1Q7
 def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha, try_num):
-    with open("./Output/bbc-distribution.txt", "w") as f:
+    with open("./Output/bbc-distribution.txt", "a+") as f:
         f.write(f'(a) ********MultinomialNB default values, try {try_num} with alpha {alpha}********\n')
         predicted_y = classifier.predict(X_test)
         # row is predicted value, column is actual value
@@ -92,20 +92,23 @@ def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_trai
         classes_num_words = [0] * len(classifier.classes_)
         
         # 2D array with length (num_of_classes, |V|). value of 0 if word doesn't appear in class, value of not 0 if word appears in class.
-        classes_word_appearance = []
+        classes_word_appearance = [[], [], [], [], []]
         for class_index in range(len(classifier.classes_)):
             row = []
             for word in range(X_train[0].shape[1]):
                 row.append(0)
             classes_word_appearance[class_index].append(row)
-        
+
         f.write(f'(g) for every class:\n')
 
-        for index, y_train_instance in enumerate(y_train):
-            classes_num_words[y_train_instance] += X_train[index].sum()
+        for index, class_index in enumerate(y_train):
+            classes_num_words[class_index] += X_train[index].sum()
 
-            for word_index, word in X_train[index]:
-                classes_word_appearance[y_train_instance][word_index] = word
+            for csr_matrix in X_train[index]:
+                for word_index in range(csr_matrix.shape[1]):
+                    word_count = csr_matrix.getcol(word_index).data
+                    if word_count is not []:
+                        classes_word_appearance[class_index][word_index] = word_count[0]
         
         for index, class_num_word in enumerate(classes_num_words):
             f.write(f'class {class_names[index]} has {class_num_word} word-tokens\n')
@@ -118,10 +121,12 @@ def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_trai
             num_words_never_appearing = 0
             num_unique_possible_words = len(classes_word_appearance[class_index])
             for word in classes_word_appearance[class_index]:
-                if (word == 0):
+                if word == 0:
                     num_words_never_appearing += 1
             f.write(f'  class {class_names[class_index]} has {num_words_never_appearing} words from the vocabulary that do not appear in it.\n')
             f.write(f'  class {class_names[class_index]} has a frequency of {num_words_never_appearing/num_unique_possible_words} for words that do not appear in it.\n')
+
+        print("\n\n")
 
 
 # T1Q7, 8, 9, 10
@@ -130,5 +135,5 @@ def prep_classifier_for_analysis():
     preprocessed_data, X_train, X_test, y_train, y_test = split_test_set()
     alphas = [1.0, 1.0, 0.0001, 0.9]
     for alpha_ind, alpha_val in enumerate(alphas):
-        classifier, X_train, y_train = nb_classifier(X_train, y_train, alphas = alpha_val)
+        classifier, X_train, y_train = nb_classifier(X_train, y_train, alpha = alpha_val)
         write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha_val, (alpha_ind+1))
