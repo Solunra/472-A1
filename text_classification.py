@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn import *
 import sklearn
 import math
+import numpy as np
 
 dataset_folder = "./Documents/BBC/"
 class_names = []
@@ -65,6 +66,7 @@ def nb_classifier(X_train, y_train, alpha=1.0):
 
 #T1Q7
 def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha, try_num):
+    vocabulary_size = preprocessed_data.shape[1]
     with open("./Output/bbc-distribution.txt", "a+") as f:
         f.write(f'(a) ********MultinomialNB default values, try {try_num} with alpha {alpha}********\n')
         predicted_y = classifier.predict(X_test)
@@ -86,24 +88,23 @@ def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_trai
 
         for index, class_ in enumerate(classifier.classes_):
             f.write(f'    {class_}: {math.exp(classifier.class_log_prior_[index])}\n')
-        f.write(f'(f) size of the vocabulary: {preprocessed_data.shape[1]}\n')
+        f.write(f'(f) size of the vocabulary: {vocabulary_size}\n')
         
         # find the number of word-token, zero entries and non-zero for each class
         classes_num_words = [0] * len(classifier.classes_)
         
         # 2D array with length (num_of_classes, |V|). value of 0 if word doesn't appear in class, value of not 0 if word appears in class.
-        classes_word_appearance = [[], [], [], [], []]
-        for class_index in range(len(classifier.classes_)):
-            row = []
-            for word in range(X_train[0].shape[1]):
-                row.append(0)
-            classes_word_appearance[class_index].append(row)
+        # initialising them here
+        classes_word_appearance = []
+        for class_ in classifier.classes_:
+            classes_word_appearance.append(np.zeros(shape=(1, vocabulary_size)))
 
         f.write(f'(g) for every class:\n')
 
         for index, class_index in enumerate(y_train):
+            # for part j
             classes_num_words[class_index] += X_train[index].sum()
-
+            # for part i
             for csr_matrix in X_train[index]:
                 for word_index in range(csr_matrix.shape[1]):
                     word_count = csr_matrix.getcol(word_index).data
