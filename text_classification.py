@@ -95,7 +95,7 @@ def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_trai
         
         # 2D array with length (num_of_classes, |V|). value of 0 if word doesn't appear in class, value of not 0 if word appears in class.
         # initialising them here
-        classes_word_appearance = np.zeros(shape=(len(classifier.classes_),vocabulary_size))
+        classes_word_appearance = np.zeros(shape=(len(classifier.classes_), vocabulary_size))
 
         f.write(f'(g) for every class:\n')
 
@@ -104,11 +104,14 @@ def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_trai
             classes_num_words[class_index] += X_train[index].sum()
             # for part i
             for csr_matrix in X_train[index]:
+                print(f'processing document {index}')
                 for word_index in range(csr_matrix.shape[1]):
-                    word_count = csr_matrix.getcol(word_index).data
-                    if word_count is not []:
-                        classes_word_appearance[class_index][word_index] = word_count[0]
-        
+                    column_value = csr_matrix.getcol(word_index)
+                    try:
+                        classes_word_appearance[class_index][word_index] += column_value.data[0]
+                    except IndexError:
+                        classes_word_appearance[class_index][word_index] += 0
+
         for index, class_num_word in enumerate(classes_num_words):
             f.write(f'class {class_names[index]} has {class_num_word} word-tokens\n')
 
