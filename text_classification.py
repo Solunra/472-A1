@@ -57,18 +57,16 @@ def split_test_set():
 
 # T1Q6
 # train classifier with training set and use it on test set
-def nb_classifier(alpha=1.0):
-    preprocessed_data, X_train, X_test, y_train, y_test = split_test_set()
+def nb_classifier(X_train, y_train, alpha=1.0):
     classifier = sklearn.naive_bayes.MultinomialNB(alpha=alpha)
     classifier.fit(X_train, y_train)
-    return classifier, preprocessed_data, X_train, X_test, y_train, y_test
+    return classifier, X_train, y_train
 
 
 #T1Q7
-def write_results_to_file():
+def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha, try_num):
     with open("./Output/bbc-distribution.txt", "w") as f:
-        f.write('(a) ********MultinomialNB default values, try 1********\n')
-        classifier, preprocessed_data, X_train, X_test, y_train, y_test = nb_classifier()
+        f.write(f'(a) ********MultinomialNB default values, try {try_num} with alpha {alpha}********\n')
         predicted_y = classifier.predict(X_test)
         # row is predicted value, column is actual value
         # matrix values are what was predicted and what it is in count
@@ -115,4 +113,22 @@ def write_results_to_file():
         f.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}\n')
         
         f.write(f'(i) for every class:\n')
-        # iterate thhrough classes_word_appearance for every class (1st dimension) and find the entries in the 2nd dimension with value 0
+        # iterate through classes_word_appearance for every class (1st dimension) and find the entries in the 2nd dimension with value 0
+        for class_index in range(len(classifier.classes_)):
+            num_words_never_appearing = 0
+            num_unique_possible_words = len(classes_word_appearance[class_index])
+            for word in classes_word_appearance[class_index]:
+                if (word == 0):
+                    num_words_never_appearing += 1
+            f.write(f'  class {class_names[class_index]} has {num_words_never_appearing} words from the vocabulary that do not appear in it.\n')
+            f.write(f'  class {class_names[class_index]} has a frequency of {num_words_never_appearing/num_unique_possible_words} for words that do not appear in it.\n')
+
+
+# T1Q7, 8, 9, 10
+# The different tries with different alphas are written to the file.
+def prep_classifier_for_analysis():
+    preprocessed_data, X_train, X_test, y_train, y_test = split_test_set()
+    alphas = [1.0, 1.0, 0.0001, 0.9]
+    for alpha_ind, alpha_val in enumerate(alphas):
+        classifier, X_train, y_train = nb_classifier(X_train, y_train, alphas = alpha_val)
+        write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha_val, (alpha_ind+1))

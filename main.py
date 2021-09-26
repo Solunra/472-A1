@@ -4,7 +4,7 @@ import sklearn
 
 def main():
     # tc.generate_pdf_distribution_of_instance_distribution()
-    tc.write_results_to_file()
+    tc.prep_classifier_for_analysis()
 
 
 # Always at the bottom of the file and will call main()
