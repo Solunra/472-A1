@@ -113,7 +113,15 @@ def write_results_to_file(output_file, classifier, preprocessed_data, X_train, X
         output_file.write(f'  class {class_names[class_index]} has {number_words_zero_occurrence} words from the vocabulary that do not appear in it.\n')
         output_file.write(f'  class {class_names[class_index]} has a frequency of {frequency} for words that do not appear in it.\n')
 
-    print("\n\n")
+    # uses numpy's sum function to compute the sum of the columns
+    corpus_word_appearance = np.sum(classes_word_appearance, axis=0)
+    singular_word_occurrence_count = 0
+    for word_count in corpus_word_appearance:
+        if word_count == 1:
+            singular_word_occurrence_count += 1
+    output_file.write(f'(j) corpus has {singular_word_occurrence_count} words from the vocabulary that occurs only once.\n')
+
+    output_file.write("\n\n")
 
 
 # T1Q7, 8, 9, 10
