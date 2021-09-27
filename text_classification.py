@@ -65,59 +65,55 @@ def nb_classifier(X_train, y_train, alpha=1.0):
 
 
 #T1Q7
-def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha, try_num):
+def write_results_to_file(output_file, classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha, try_num):
     vocabulary_size = preprocessed_data.shape[1]
-    with open("./Output/bbc-distribution.txt", "a+") as f:
-        f.write(f'(a) ********MultinomialNB default values, try {try_num} with alpha {alpha}********\n')
-        predicted_y = classifier.predict(X_test)
-        # row is predicted value, column is actual value
-        # matrix values are what was predicted and what it is in count
-        confusion_matrix = sklearn.metrics.confusion_matrix(y_test, predicted_y)
-        f.write(f'(b)\n{confusion_matrix}\n')
-        classification_report = sklearn.metrics.classification_report(y_test, predicted_y, output_dict=True)
-        f.write(f'(c)\n{classification_report}\n')
-        accuracy_score = sklearn.metrics.accuracy_score(y_test, predicted_y)
-        # failed to add labels, it uses the index instead
-        f1_score_macro = sklearn.metrics.f1_score(y_test, predicted_y, average='macro')
-        f1_score_weighted = sklearn.metrics.f1_score(y_test, predicted_y, average='weighted')
-        f.write(f'(d) accuracy score: {accuracy_score}\n'
-                f'    macro f1 score: {f1_score_macro}\n'
-                f'    weighted f1 score: {f1_score_weighted}\n')
-        f.write(f'(e)\nlogarithmic prior probability of classes 0 to {len(classifier.class_log_prior_)}: {classifier.class_log_prior_}\n')
-        f.write(f'prior probability of:\n')
+    output_file.write(f'(a) ********MultinomialNB default values, try {try_num} with alpha {alpha}********\n')
+    predicted_y = classifier.predict(X_test)
+    # row is predicted value, column is actual value
+    # matrix values are what was predicted and what it is in count
+    confusion_matrix = sklearn.metrics.confusion_matrix(y_test, predicted_y)
+    output_file.write(f'(b)\n{confusion_matrix}\n')
+    classification_report = sklearn.metrics.classification_report(y_test, predicted_y, output_dict=True)
+    output_file.write(f'(c)\n{classification_report}\n')
+    accuracy_score = sklearn.metrics.accuracy_score(y_test, predicted_y)
+    # failed to add labels, it uses the index instead
+    f1_score_macro = sklearn.metrics.f1_score(y_test, predicted_y, average='macro')
+    f1_score_weighted = sklearn.metrics.f1_score(y_test, predicted_y, average='weighted')
+    output_file.write(f'(d) accuracy score: {accuracy_score}\n'
+            f'    macro f1 score: {f1_score_macro}\n'
+            f'    weighted f1 score: {f1_score_weighted}\n')
+    output_file.write(f'(e)\nlogarithmic prior probability of classes 0 to {len(classifier.class_log_prior_)}: {classifier.class_log_prior_}\n')
+    output_file.write(f'prior probability of:\n')
 
-        for index, class_ in enumerate(classifier.classes_):
-            f.write(f'    {class_}: {math.exp(classifier.class_log_prior_[index])}\n')
-        f.write(f'(f) size of the vocabulary: {vocabulary_size}\n')
-        
-        # find the number of word-token, zero entries and non-zero for each class
-        classes_num_words = [0] * len(classifier.classes_)
-        
-        # 2D array with length (num_of_classes, |V|). value of 0 if word doesn't appear in class, value of not 0 if word appears in class.
-        # initialising them here
-        f.write(f'(g) for every class:\n')
+    for index, class_ in enumerate(classifier.classes_):
+        output_file.write(f'    {class_}: {math.exp(classifier.class_log_prior_[index])}\n')
+    output_file.write(f'(f) size of the vocabulary: {vocabulary_size}\n')
 
-        for index, class_num_word in enumerate(classes_num_words):
-            f.write(f'class {class_names[index]} has {class_num_word} word-tokens\n')
+    classes_word_appearance = [[], [], [], [], []]
+    X_train_array = X_train.toarray()
+    for index, class_index in enumerate(y_train):
+        classes_word_appearance[class_index].append(X_train_array[index])
+    for index, word_list in enumerate(classes_word_appearance):
+        classes_word_appearance[index] = np.add.reduce(word_list)
 
-        f.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}\n')
+    # 2D array with length (num_of_classes, |V|). value of 0 if word doesn't appear in class, value of not 0 if word appears in class.
+    # initialising them here
+    output_file.write(f'(g) for every class:\n')
 
-        classes_word_appearance = [[], [], [], [], []]
-        X_train_array = X_train.toarray()
-        for index, class_index in enumerate(y_train):
-            classes_word_appearance[class_index].append(X_train_array[index])
-        for index, word_list in enumerate(classes_word_appearance):
-            classes_word_appearance[index] = np.add.reduce(word_list)
+    for index, class_num_word in enumerate(classes_word_appearance):
+        output_file.write(f'class {class_names[index]} has {class_num_word.sum()} word-tokens\n')
 
-        f.write(f'(i) for every class:\n')
-        # iterate through classes_word_appearance for every class (1st dimension) and find the entries in the 2nd dimension with value 0
-        for class_index in classifier.classes_:
-            number_words_zero_occurrence = vocabulary_size - np.count_nonzero(classes_word_appearance)
-            frequency = (vocabulary_size - np.count_nonzero(classes_word_appearance))/ vocabulary_size
-            f.write(f'  class {class_names[class_index]} has {number_words_zero_occurrence} words from the vocabulary that do not appear in it.\n')
-            f.write(f'  class {class_names[class_index]} has a frequency of {frequency} for words that do not appear in it.\n')
+    output_file.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}\n')
 
-        print("\n\n")
+    output_file.write(f'(i) for every class:\n')
+    # iterate through classes_word_appearance for every class (1st dimension) and find the entries in the 2nd dimension with value 0
+    for class_index in classifier.classes_:
+        number_words_zero_occurrence = vocabulary_size - np.count_nonzero(classes_word_appearance[class_index])
+        frequency = number_words_zero_occurrence / vocabulary_size
+        output_file.write(f'  class {class_names[class_index]} has {number_words_zero_occurrence} words from the vocabulary that do not appear in it.\n')
+        output_file.write(f'  class {class_names[class_index]} has a frequency of {frequency} for words that do not appear in it.\n')
+
+    print("\n\n")
 
 
 # T1Q7, 8, 9, 10
@@ -125,6 +121,7 @@ def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_trai
 def prep_classifier_for_analysis():
     preprocessed_data, X_train, X_test, y_train, y_test = split_test_set()
     alphas = [1.0, 1.0, 0.0001, 0.9]
-    for alpha_ind, alpha_val in enumerate(alphas):
-        classifier, X_train, y_train = nb_classifier(X_train, y_train, alpha = alpha_val)
-        write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha_val, (alpha_ind+1))
+    with open("./Output/bbc-distribution.txt", "w") as output_file:
+        for alpha_ind, alpha_val in enumerate(alphas):
+            classifier, X_train, y_train = nb_classifier(X_train, y_train, alpha = alpha_val)
+            write_results_to_file(output_file, classifier, preprocessed_data, X_train, X_test, y_train, y_test, alpha_val, (alpha_ind+1))
