@@ -95,38 +95,27 @@ def write_results_to_file(classifier, preprocessed_data, X_train, X_test, y_trai
         
         # 2D array with length (num_of_classes, |V|). value of 0 if word doesn't appear in class, value of not 0 if word appears in class.
         # initialising them here
-        classes_word_appearance = np.zeros(shape=(len(classifier.classes_), vocabulary_size))
-
         f.write(f'(g) for every class:\n')
-
-        for index, class_index in enumerate(y_train):
-            # for part j
-            classes_num_words[class_index] += X_train[index].sum()
-            # for part i
-            for csr_matrix in X_train[index]:
-                print(f'processing document {index}')
-                for word_index in range(csr_matrix.shape[1]):
-                    column_value = csr_matrix.getcol(word_index)
-                    try:
-                        classes_word_appearance[class_index][word_index] += column_value.data[0]
-                    except IndexError:
-                        classes_word_appearance[class_index][word_index] += 0
 
         for index, class_num_word in enumerate(classes_num_words):
             f.write(f'class {class_names[index]} has {class_num_word} word-tokens\n')
 
         f.write(f'(h) number of word-tokens in the entire corpus: {preprocessed_data.sum()}\n')
-        
+
+        classes_word_appearance = [[], [], [], [], []]
+        X_train_array = X_train.toarray()
+        for index, class_index in enumerate(y_train):
+            classes_word_appearance[class_index].append(X_train_array[index])
+        for index, word_list in enumerate(classes_word_appearance):
+            classes_word_appearance[index] = np.add.reduce(word_list)
+
         f.write(f'(i) for every class:\n')
         # iterate through classes_word_appearance for every class (1st dimension) and find the entries in the 2nd dimension with value 0
-        for class_index in range(len(classifier.classes_)):
-            num_words_never_appearing = 0
-            num_unique_possible_words = len(classes_word_appearance[class_index])
-            for word in classes_word_appearance[class_index]:
-                if word == 0:
-                    num_words_never_appearing += 1
-            f.write(f'  class {class_names[class_index]} has {num_words_never_appearing} words from the vocabulary that do not appear in it.\n')
-            f.write(f'  class {class_names[class_index]} has a frequency of {num_words_never_appearing/num_unique_possible_words} for words that do not appear in it.\n')
+        for class_index in classifier.classes_:
+            number_words_zero_occurrence = vocabulary_size - np.count_nonzero(classes_word_appearance)
+            frequency = (vocabulary_size - np.count_nonzero(classes_word_appearance))/ vocabulary_size
+            f.write(f'  class {class_names[class_index]} has {number_words_zero_occurrence} words from the vocabulary that do not appear in it.\n')
+            f.write(f'  class {class_names[class_index]} has a frequency of {frequency} for words that do not appear in it.\n')
 
         print("\n\n")
 
