@@ -37,7 +37,10 @@ class tech has 156086 word-tokens
   class sport has a frequency of 0.6721049590428605 for words that do not appear in it.
   class tech has 18444 words from the vocabulary that do not appear in it.
   class tech has a frequency of 0.626899153665749 for words that do not appear in it.
-corpus has 9580 words from the vocabulary that occurs only once.
+(j) corpus has 9580 words from the vocabulary that occurs only once.
+(k) our favourite words are brotherhood & invincibility.
+    brotherhood has a log prob of -9.861632286279209
+    invincibility has a log prob of -13.416980347768622
 
 
 (a) ********MultinomialNB default values, try 2 with alpha 1.0********
@@ -79,7 +82,10 @@ class tech has 156086 word-tokens
   class sport has a frequency of 0.6721049590428605 for words that do not appear in it.
   class tech has 18444 words from the vocabulary that do not appear in it.
   class tech has a frequency of 0.626899153665749 for words that do not appear in it.
-corpus has 9580 words from the vocabulary that occurs only once.
+(j) corpus has 9580 words from the vocabulary that occurs only once.
+(k) our favourite words are brotherhood & invincibility.
+    brotherhood has a log prob of -9.861632286279209
+    invincibility has a log prob of -13.416980347768622
 
 
 (a) ********MultinomialNB default values, try 3 with alpha 0.0001********
@@ -121,7 +127,10 @@ class tech has 156086 word-tokens
   class sport has a frequency of 0.6721049590428605 for words that do not appear in it.
   class tech has 18444 words from the vocabulary that do not appear in it.
   class tech has a frequency of 0.626899153665749 for words that do not appear in it.
-corpus has 9580 words from the vocabulary that occurs only once.
+(j) corpus has 9580 words from the vocabulary that occurs only once.
+(k) our favourite words are brotherhood & invincibility.
+    brotherhood has a log prob of -9.861632286279209
+    invincibility has a log prob of -13.416980347768622
 
 
 (a) ********MultinomialNB default values, try 4 with alpha 0.9********
@@ -163,6 +172,9 @@ class tech has 156086 word-tokens
   class sport has a frequency of 0.6721049590428605 for words that do not appear in it.
   class tech has 18444 words from the vocabulary that do not appear in it.
   class tech has a frequency of 0.626899153665749 for words that do not appear in it.
-corpus has 9580 words from the vocabulary that occurs only once.
+(j) corpus has 9580 words from the vocabulary that occurs only once.
+(k) our favourite words are brotherhood & invincibility.
+    brotherhood has a log prob of -9.861632286279209
+    invincibility has a log prob of -13.416980347768622
 
 
