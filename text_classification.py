@@ -1,4 +1,5 @@
 import os
+from typing import Counter
 import matplotlib.pyplot as plt
 from sklearn import *
 import sklearn
@@ -7,6 +8,8 @@ import numpy as np
 
 dataset_folder = "./Documents/BBC/"
 class_names = []
+fav_word_info_1 = [0,'']
+fav_word_info_2 = [0,'']
 
 
 # T1Q2
@@ -39,6 +42,20 @@ def preprocess_data():
     dataset = sklearn.datasets.load_files(dataset_folder, encoding="latin1")
     vectorizer = sklearn.feature_extraction.text.CountVectorizer(encoding="latin1")
     preprocessed_dataset = vectorizer.fit_transform(dataset['data'])
+    
+    # Figuring out favourite words and their corresponding index:
+    global fav_word_info_1
+    fav_word_info_1[1] = 'brotherhood'
+    global fav_word_info_2
+    fav_word_info_2[1] = 'invincibility'
+    fav_word_counter = 0
+    for word, word_occurence in enumerate(vectorizer.vocabulary_):
+        if (word == 'brotherhood'):
+            fav_word_info_1[0] = fav_word_counter
+        elif (word == 'invincibility'):
+            fav_word_info_2[0] = fav_word_counter
+        fav_word_counter +=1
+    
     class_names = dataset['target_names']
     # Returns document-term matrix
     # (documents on the row header, words on the column header. The rest is frequency of each word for each document)
@@ -121,6 +138,16 @@ def write_results_to_file(output_file, classifier, preprocessed_data, X_train, X
             singular_word_occurrence_count += 1
     output_file.write(f'(j) corpus has {singular_word_occurrence_count} words from the vocabulary that occurs only once.\n')
 
+    
+    output_file.write(f'(k) our favourite words are {fav_word_info_1[1]} & {fav_word_info_2[1]}.\n')
+    fav_word_appearance_1 = 0
+    fav_word_appearance_2 = 0
+    for doc in X_train_array:
+        fav_word_appearance_1 += doc[fav_word_info_1[0]]
+        fav_word_appearance_2 += doc[fav_word_info_2[0]]
+    
+    output_file.write(f'    {fav_word_info_1[1]} has a log prob of {math.log(fav_word_appearance_1/vocabulary_size)}\n')
+    output_file.write(f'    {fav_word_info_2[1]} has a log prob of {math.log(fav_word_appearance_2/vocabulary_size)}\n')
     output_file.write("\n\n")
 
 
