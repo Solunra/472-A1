@@ -47,13 +47,10 @@ def preprocess_data():
     global fav_word_info_1
     fav_word_info_1[1] = 'brotherhood'
     global fav_word_info_2
-    fav_word_info_2[1] = 'invincibility'
-    for word_ind, word in enumerate(vectorizer.vocabulary_):
-        if (word == 'brotherhood'):
-            fav_word_info_1[0] = word_ind
-        elif (word == 'invincibility'):
-            fav_word_info_2[0] = word_ind
-    
+    fav_word_info_2[1] = 'cavalier'
+    fav_word_info_1[0] = vectorizer.vocabulary_['brotherhood']
+    fav_word_info_2[0] = vectorizer.vocabulary_['cavalier']
+
     class_names = dataset['target_names']
     # Returns document-term matrix
     # (documents on the row header, words on the column header. The rest is frequency of each word for each document)
@@ -108,8 +105,11 @@ def write_results_to_file(output_file, classifier, preprocessed_data, X_train, X
     # initialising them here
     classes_word_appearance = [[], [], [], [], []]
     X_train_array = X_train.toarray()
+    X_test_array = X_test.toarray()
     for index, class_index in enumerate(y_train):
         classes_word_appearance[class_index].append(X_train_array[index])
+    for index, class_index in enumerate(y_test):
+        classes_word_appearance[class_index].append(X_test_array[index])
     for index, word_list in enumerate(classes_word_appearance):
         classes_word_appearance[index] = np.add.reduce(word_list)
 
@@ -142,12 +142,9 @@ def write_results_to_file(output_file, classifier, preprocessed_data, X_train, X
     
     output_file.write(f'(k) our favourite words are {fav_word_info_1[1]} & {fav_word_info_2[1]}.\n')
     # Keep track of the word tokens for our favourite words across all of the training set
-    fav_word_appearance_1 = 0
-    fav_word_appearance_2 = 0
-    for doc in X_train_array:
-        fav_word_appearance_1 += doc[fav_word_info_1[0]]
-        fav_word_appearance_2 += doc[fav_word_info_2[0]]
-    
+    fav_word_appearance_1 = corpus_word_appearance[fav_word_info_1[0]]
+    fav_word_appearance_2 = corpus_word_appearance[fav_word_info_2[0]]
+
     output_file.write(f'    {fav_word_info_1[1]} has a log prob of {math.log(fav_word_appearance_1/sum_word_tokens_training_set)}\n')
     output_file.write(f'    {fav_word_info_2[1]} has a log prob of {math.log(fav_word_appearance_2/sum_word_tokens_training_set)}\n')
     output_file.write("\n\n")
