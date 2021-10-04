@@ -20,17 +20,19 @@ def generate_pdf_of_instance_distribution(csv_data):
 def convert_to_numerical_format():
     csv_data = pandas.read_csv(dataset_file)
     # unordered values
-    set_of_sex_values = pandas.Categorical(csv_data['Sex'], ordered=False).unique().tolist()
+    set_of_sex_values = pandas.Categorical(csv_data['Sex'], ordered=False)
+    sex_columns = pandas.get_dummies(set_of_sex_values, prefix='Sex')
+    csv_data = csv_data.drop(labels='Sex', axis=1)
+    csv_data = csv_data.join(sex_columns)
     # ordered values; BP shares values with Cholesterol
     # reason for sorting is to make it consistent with PDF's order
     set_of_bp_values = pandas.Categorical(csv_data['BP'], ordered=True, categories=['LOW', 'NORMAL', 'HIGH'])
     ordered_bp_list = set_of_bp_values.categories.tolist()
 
-    processed_data_frame = csv_data.replace(to_replace=set_of_sex_values, value=range(len(set_of_sex_values)))
-    processed_data_frame = processed_data_frame.replace(to_replace=ordered_bp_list, value=range(len(ordered_bp_list)))
-
+    processed_data_frame = csv_data.replace(to_replace=ordered_bp_list, value=range(len(ordered_bp_list)))
     # dropped to put into separate list
-    processed_data_frame.drop(labels='Drug', axis=1)
+    processed_data_frame = processed_data_frame.drop(labels='Drug', axis=1)
+    print(processed_data_frame)
     return processed_data_frame, csv_data['Drug'].tolist()
 
 
