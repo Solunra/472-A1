@@ -105,11 +105,8 @@ def write_results_to_file(output_file, classifier, preprocessed_data, X_train, X
     # initialising them here
     classes_word_appearance = [[], [], [], [], []]
     X_train_array = X_train.toarray()
-    X_test_array = X_test.toarray()
     for index, class_index in enumerate(y_train):
         classes_word_appearance[class_index].append(X_train_array[index])
-    for index, class_index in enumerate(y_test):
-        classes_word_appearance[class_index].append(X_test_array[index])
     for index, word_list in enumerate(classes_word_appearance):
         classes_word_appearance[index] = np.add.reduce(word_list)
 
