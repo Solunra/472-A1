@@ -45,10 +45,10 @@ def preprocess_data():
     
     # Figuring out favourite words and their corresponding index:
     global fav_word_info_1
-    fav_word_info_1[1] = 'brotherhood'
+    fav_word_info_1[1] = 'association'
     global fav_word_info_2
     fav_word_info_2[1] = 'cavalier'
-    fav_word_info_1[0] = vectorizer.vocabulary_['brotherhood']
+    fav_word_info_1[0] = vectorizer.vocabulary_['association']
     fav_word_info_2[0] = vectorizer.vocabulary_['cavalier']
 
     class_names = dataset['target_names']
