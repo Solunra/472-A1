@@ -32,7 +32,6 @@ def convert_to_numerical_format():
     processed_data_frame = csv_data.replace(to_replace=ordered_bp_list, value=range(len(ordered_bp_list)))
     # dropped to put into separate list
     processed_data_frame = processed_data_frame.drop(labels='Drug', axis=1)
-    print(processed_data_frame)
     return processed_data_frame, csv_data['Drug'].tolist()
 
 
