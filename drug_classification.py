@@ -23,16 +23,17 @@ def convert_to_numerical_format():
     set_of_sex_values = pandas.Categorical(csv_data['Sex'], ordered=False).unique().tolist()
     # ordered values; BP shares values with Cholesterol
     # reason for sorting is to make it consistent with PDF's order
-    set_of_drug_values = pandas.Categorical(csv_data['Drug'], ordered=False).unique().tolist()
-    set_of_drug_values.sort()
     set_of_bp_values = pandas.Categorical(csv_data['BP'], ordered=True, categories=['LOW', 'NORMAL', 'HIGH'])
+    ordered_bp_list = set_of_bp_values.categories.tolist()
 
     processed_data_frame = csv_data.replace(to_replace=set_of_sex_values, value=range(len(set_of_sex_values)))
-    processed_data_frame = processed_data_frame.replace(to_replace=set_of_drug_values, value=range(len(set_of_drug_values)))
-    processed_data_frame = processed_data_frame.replace(to_replace=set_of_bp_values.categories.tolist(), value=range(len(set_of_bp_values.categories.tolist())))
-    return processed_data_frame, range(len(set_of_drug_values))
+    processed_data_frame = processed_data_frame.replace(to_replace=ordered_bp_list, value=range(len(ordered_bp_list)))
+
+    # dropped to put into separate list
+    processed_data_frame.drop(labels='Drug', axis=1)
+    return processed_data_frame, csv_data['Drug'].tolist()
 
 
 def prep_classifier_for_analysis():
-    processed_dataset, classes_index = convert_to_numerical_format()
-    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(processed_dataset, classes_index)
+    processed_dataset, classes_index_dataset = convert_to_numerical_format()
+    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(processed_dataset, classes_index_dataset)
