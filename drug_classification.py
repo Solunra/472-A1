@@ -1,5 +1,6 @@
 import pandas
 import matplotlib.pyplot as plt
+import sklearn
 
 
 dataset_file = "./Documents/drug200.csv"
@@ -29,8 +30,9 @@ def convert_to_numerical_format():
     processed_data_frame = csv_data.replace(to_replace=set_of_sex_values, value=range(len(set_of_sex_values)))
     processed_data_frame = processed_data_frame.replace(to_replace=set_of_drug_values, value=range(len(set_of_drug_values)))
     processed_data_frame = processed_data_frame.replace(to_replace=set_of_bp_values.categories.tolist(), value=range(len(set_of_bp_values.categories.tolist())))
-    return processed_data_frame
+    return processed_data_frame, range(len(set_of_drug_values))
 
 
 def prep_classifier_for_analysis():
-    processed_dataset = convert_to_numerical_format()
+    processed_dataset, classes_index = convert_to_numerical_format()
+    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(processed_dataset, classes_index)
