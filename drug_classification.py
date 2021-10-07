@@ -44,6 +44,8 @@ def prep_classifier_for_analysis():
 
 def run_classifiers():
     x_train, x_test, y_train, y_test = prep_classifier_for_analysis()
+    
+    # Gaussian Naive Bayes
     nb_classifier = sklearn.naive_bayes.MultinomialNB()
     nb_classifier.fit(x_train, y_train)
     nb_predicted_y = nb_classifier.predict(x_test)
@@ -53,13 +55,27 @@ def run_classifiers():
     nb_f1_score_macro = sklearn.metrics.f1_score(y_test, nb_predicted_y, average='macro')
     nb_f1_score_weighted = sklearn.metrics.f1_score(y_test, nb_predicted_y, average='weighted')
 
-    # b_dt_classifier = sklearn.tree.DecisionTreeClassifier()
-    # b_dt_classifier.fit(x_train, y_train)
-    # b_dt_predicted_y = b_dt_classifier.fit(x_train, y_train)
-    # b_dt_confusion_matrix = sklearn.metrics.accuracy_score(y_test, b_dt_predicted_y)
-    # b_dt_classification_report = sklearn.metrics.classification_report(y_test, b_dt_predicted_y, output_dict=True)
-    # b_dt_accuracy_score = sklearn.metrics.accuracy_score(y_test, b_dt_predicted_y)
-    # b_dt_f1_score_macro = sklearn.metrics.f1_score(y_test, b_dt_predicted_y, average='macro')
-    # b_dt_f1_score_weighted = sklearn.metrics.f1_score(y_test, b_dt_predicted_y, average='weighted')
+    # Base-DT
+    b_dt_classifier = sklearn.tree.DecisionTreeClassifier()
+    b_dt_classifier.fit(x_train, y_train)
+    b_dt_predicted_y = b_dt_classifier.predict(x_test)
+    b_dt_confusion_matrix = sklearn.metrics.accuracy_score(y_test, b_dt_predicted_y)
+    b_dt_classification_report = sklearn.metrics.classification_report(y_test, b_dt_predicted_y, output_dict=True)
+    b_dt_accuracy_score = sklearn.metrics.accuracy_score(y_test, b_dt_predicted_y)
+    b_dt_f1_score_macro = sklearn.metrics.f1_score(y_test, b_dt_predicted_y, average='macro')
+    b_dt_f1_score_weighted = sklearn.metrics.f1_score(y_test, b_dt_predicted_y, average='weighted')
 
+    # Top-DT
+    # values required to play around with:
+    tree_parameters = {'criterion': ['gini','entropy'],'max_depth': [5,10], 'min_samples_split' : [2, 4]}
+    t_raw_dt_classifier = sklearn.tree.DecisionTreeClassifier()
+    t_dt_classifier = sklearn.model_selection.GridSearchCV(t_raw_dt_classifier, tree_parameters)
+    t_dt_classifier.fit(x_train, y_train)
+    t_dt_predicted_y = t_dt_classifier.predict(x_test)
+    t_dt_confusion_matrix = sklearn.metrics.confusion_matrix(y_test, t_dt_predicted_y)
+    t_dt_classification_report = sklearn.metrics.classification_report(y_test, t_dt_predicted_y, output_dict=True)
+    t_dt_accuracy_score = sklearn.metrics.accuracy_score(y_test, t_dt_predicted_y)
+    t_dt_f1_score_macro = sklearn.metrics.f1_score(y_test, t_dt_predicted_y, average='macro')
+    t_dt_f1_score_weighted = sklearn.metrics.f1_score(y_test, t_dt_predicted_y, average='weighted')
+    
 run_classifiers()
