@@ -1,5 +1,6 @@
 import pandas
 import matplotlib.pyplot as plt
+from sklearn import *
 import sklearn
 
 
@@ -38,3 +39,27 @@ def convert_to_numerical_format():
 def prep_classifier_for_analysis():
     processed_dataset, classes_index_dataset = convert_to_numerical_format()
     x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(processed_dataset, classes_index_dataset)
+    return x_train, x_test, y_train, y_test
+
+
+def run_classifiers():
+    x_train, x_test, y_train, y_test = prep_classifier_for_analysis()
+    nb_classifier = sklearn.naive_bayes.MultinomialNB()
+    nb_classifier.fit(x_train, y_train)
+    nb_predicted_y = nb_classifier.predict(x_test)
+    nb_confusion_matrix = sklearn.metrics.confusion_matrix(y_test, nb_predicted_y)
+    nb_classification_report = sklearn.metrics.classification_report(y_test, nb_predicted_y, output_dict=True)
+    nb_accuracy_score = sklearn.metrics.accuracy_score(y_test, nb_predicted_y)
+    nb_f1_score_macro = sklearn.metrics.f1_score(y_test, nb_predicted_y, average='macro')
+    nb_f1_score_weighted = sklearn.metrics.f1_score(y_test, nb_predicted_y, average='weighted')
+
+    # b_dt_classifier = sklearn.tree.DecisionTreeClassifier()
+    # b_dt_classifier.fit(x_train, y_train)
+    # b_dt_predicted_y = b_dt_classifier.fit(x_train, y_train)
+    # b_dt_confusion_matrix = sklearn.metrics.accuracy_score(y_test, b_dt_predicted_y)
+    # b_dt_classification_report = sklearn.metrics.classification_report(y_test, b_dt_predicted_y, output_dict=True)
+    # b_dt_accuracy_score = sklearn.metrics.accuracy_score(y_test, b_dt_predicted_y)
+    # b_dt_f1_score_macro = sklearn.metrics.f1_score(y_test, b_dt_predicted_y, average='macro')
+    # b_dt_f1_score_weighted = sklearn.metrics.f1_score(y_test, b_dt_predicted_y, average='weighted')
+
+run_classifiers()
