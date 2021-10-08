@@ -59,7 +59,6 @@ def run_classifiers():
     nb_classifier.fit(x_train, y_train)
     nb_metrics = get_performance_metrics(nb_classifier, x_test, y_test)
 
-
     # 6.b Base-DT
     b_dt_classifier = sklearn.tree.DecisionTreeClassifier()
     b_dt_classifier.fit(x_train, y_train)
@@ -83,6 +82,15 @@ def run_classifiers():
     # hidden_layer_sizes=[100] -> a single hidden layer with 100 neurons
     # logistic -> sigmoid function
     # sgd -> stochastic gradient descent
-    MLP_classifier = sklearn.neural_network.MLPClassifier(hidden_layer_sizes=[100], activation='logistic', solver="sgd")
+    MLP_classifier = sklearn.neural_network.MLPClassifier(hidden_layer_sizes=[100], activation='logistic', solver='sgd')
     MLP_classifier.fit(x_train, y_train)
     MLP_metrics = get_performance_metrics(MLP_classifier, x_test, y_test)
+
+    # 6.f
+    # activation: sigmoid, tang, relu, identity
+    # network architecture: [30, 50] OR [10, 10, 10]
+    # solver: sgd or adam(optimized stochastic gradient descent)
+    top_MLP_classifier = sklearn.neural_network.MLPClassifier([10, 10, 10], activation='relu', solver='adam')
+    top_MLP_classifier.fit(x_train, y_train)
+    top_MLP_metrics = get_performance_metrics(top_MLP_classifier, x_test, y_test)
+    print()
