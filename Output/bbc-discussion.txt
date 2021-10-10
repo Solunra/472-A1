@@ -1,0 +1,10 @@
+1) 	The metric best suited for the dataset that we had to calculate is the macro average F1. However, a macro average Fβ measure with a β<1 would be more appropriate.
+	
+	High precision helps us find articles that are classified correctly and demonstrates that articles which are wrongly identified as being relevant are few and far between.
+	When searching for a certain class of documents, the search would not necessarily need to give back every document of that class, but the search should rather ensure that 
+	the documents it gives back are actually of that class and are not documents wrongly identified and thus useless for the user.
+
+	While precision is important, it must also be noted that a query on a certain type of class should return a sizeable quantity of documents. A search on a class that only returns
+	2 out of 200 documents because of an overemphasis on the precision of the model would be inadequate in most use cases, thus highlighting the importance of taking recall into account.
+	Given that, ideally, a search on a class returns an adequate of documents while mostly ensuring that these documents are correctly identified, a macro average 
+	Fβ measure with a β<1 would take into account recall while prioritizing precision. 
