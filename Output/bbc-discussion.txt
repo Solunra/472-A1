@@ -7,4 +7,16 @@
 	While precision is important, it must also be noted that a query on a certain type of class should return a sizeable quantity of documents. A search on a class that only returns
 	2 out of 200 documents because of an overemphasis on the precision of the model would be inadequate in most use cases, thus highlighting the importance of taking recall into account.
 	Given that, ideally, a search on a class returns an adequate of documents while mostly ensuring that these documents are correctly identified, a macro average 
-	Fβ measure with a β<1 would take into account recall while prioritizing precision. 
+	Fβ measure with a β<1 would take into account recall while prioritizing precision.
+
+2) 	It must be noted that all tries using the same training and testing sets, which could of course account for similarities between the different attempts.
+	Given that try 1 and try 2 have the same alpha values, it follows that their results would be similar, especially given that they are using the same training and test sets.
+	
+	Interestingly, an alpha of 1.0 seems to have a negative (& however small) impact on precision, recall and f1 measures. However, it is not the case that the smallest smoothing
+	value gives the best results for precision and recall. an alpha of 0.9 gives better results than 0.0001 for the precision and recall.
+
+	Given that the overall values for precision, recall, and F1 measures only lighlty vary in between attempts, it makes sense that such measures 
+	rarely vary for a class in between different attempts. 
+
+	
+	
