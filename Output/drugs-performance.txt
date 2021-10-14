@@ -1,0 +1,272 @@
+a) NB ============================================
+b) Confusion Matrix
+[[ 1  1  0  1  1]
+ [ 0  3  0  1  0]
+ [ 0  0  0  3  2]
+ [ 0  0  0  9  2]
+ [ 0  0  0  5 21]]
+c)
+class drugA: 
+	 Precision: 1.0
+	 Recall: 0.25
+	 F1-Measure: 0.4
+class drugB: 
+	 Precision: 0.75
+	 Recall: 0.75
+	 F1-Measure: 0.75
+class drugC: 
+	 Precision: 0.0
+	 Recall: 0.0
+	 F1-Measure: 0.0
+class drugX: 
+	 Precision: 0.47368421052631576
+	 Recall: 0.8181818181818182
+	 F1-Measure: 0.6
+class drugY: 
+	 Precision: 0.8076923076923077
+	 Recall: 0.8076923076923077
+	 F1-Measure: 0.8076923076923077
+d) 
+	 Accuracy: 0.68
+	 Macro-Average F1-Score: 0.5115384615384615
+	 Weighted-Average F1-Score: 0.644
+
+
+a) Base-DT ============================================
+b) Confusion Matrix
+[[ 4  0  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  5  0  0]
+ [ 0  0  0 11  0]
+ [ 0  0  0  0 26]]
+c)
+class drugA: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+class drugB: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+class drugC: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+class drugX: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+class drugY: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+d) 
+	 Accuracy: 1.0
+	 Macro-Average F1-Score: 1.0
+	 Weighted-Average F1-Score: 1.0
+
+
+a) Top-DT with criterion: entropy, max_depth: [5, 10], min_samples_split: [2, 4, 6] ============================================
+b) Confusion Matrix
+[[ 4  0  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  5  0  0]
+ [ 0  0  0 11  0]
+ [ 0  0  0  0 26]]
+c)
+class drugA: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+class drugB: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+class drugC: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+class drugX: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+class drugY: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
+d) 
+	 Accuracy: 1.0
+	 Macro-Average F1-Score: 1.0
+	 Weighted-Average F1-Score: 1.0
+
+
+a) PER ============================================
+b) Confusion Matrix
+[[ 0  0  0  4  0]
+ [ 0  0  0  4  0]
+ [ 0  0  0  5  0]
+ [ 0  0  0 11  0]
+ [ 0  0  0 12 14]]
+c)
+class drugA: 
+	 Precision: 0.0
+	 Recall: 0.0
+	 F1-Measure: 0.0
+class drugB: 
+	 Precision: 0.0
+	 Recall: 0.0
+	 F1-Measure: 0.0
+class drugC: 
+	 Precision: 0.0
+	 Recall: 0.0
+	 F1-Measure: 0.0
+class drugX: 
+	 Precision: 0.3055555555555556
+	 Recall: 1.0
+	 F1-Measure: 0.46808510638297873
+class drugY: 
+	 Precision: 1.0
+	 Recall: 0.5384615384615384
+	 F1-Measure: 0.7000000000000001
+d) 
+	 Accuracy: 0.5
+	 Macro-Average F1-Score: 0.23361702127659578
+	 Weighted-Average F1-Score: 0.46697872340425534
+
+
+a) Base-MLP ============================================
+b) Confusion Matrix
+[[ 0  0  0  1  3]
+ [ 0  0  0  4  0]
+ [ 0  0  0  3  2]
+ [ 0  0  0  9  2]
+ [ 0  0  0  2 24]]
+c)
+class drugA: 
+	 Precision: 0.0
+	 Recall: 0.0
+	 F1-Measure: 0.0
+class drugB: 
+	 Precision: 0.0
+	 Recall: 0.0
+	 F1-Measure: 0.0
+class drugC: 
+	 Precision: 0.0
+	 Recall: 0.0
+	 F1-Measure: 0.0
+class drugX: 
+	 Precision: 0.47368421052631576
+	 Recall: 0.8181818181818182
+	 F1-Measure: 0.6
+class drugY: 
+	 Precision: 0.7741935483870968
+	 Recall: 0.9230769230769231
+	 F1-Measure: 0.8421052631578947
+d) 
+	 Accuracy: 0.66
+	 Macro-Average F1-Score: 0.28842105263157897
+	 Weighted-Average F1-Score: 0.5698947368421052
+
+
+a) Top-MLP with activation: tanh, solver: adam, network arch.: [30, 50] ============================================
+b) Confusion Matrix
+[[ 3  1  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  0  5  0]
+ [ 0  0  0 10  1]
+ [ 0  0  0  1 25]]
+c)
+class drugA: 
+	 Precision: 1.0
+	 Recall: 0.75
+	 F1-Measure: 0.8571428571428571
+class drugB: 
+	 Precision: 0.8
+	 Recall: 1.0
+	 F1-Measure: 0.888888888888889
+class drugC: 
+	 Precision: 0.0
+	 Recall: 0.0
+	 F1-Measure: 0.0
+class drugX: 
+	 Precision: 0.625
+	 Recall: 0.9090909090909091
+	 F1-Measure: 0.7407407407407406
+class drugY: 
+	 Precision: 0.9615384615384616
+	 Recall: 0.9615384615384616
+	 F1-Measure: 0.9615384615384616
+d) 
+	 Accuracy: 0.84
+	 Macro-Average F1-Score: 0.6896621896621896
+	 Weighted-Average F1-Score: 0.8026455026455026
+
+
+
+
+=== All Averages Per Class ===
+
+For classifier: NB
+Average Accuracy: 0.6799999999999999
+Average Macro F1: 0.5115384615384615
+Average Weighted F1: 0.644
+
+For classifier: Base-DT
+Average Accuracy: 1.0
+Average Macro F1: 1.0
+Average Weighted F1: 1.0
+
+For classifier: Top-DT with criterion: entropy, max_depth: [5, 10], min_samples_split: [2, 4, 6]
+Average Accuracy: 1.0
+Average Macro F1: 1.0
+Average Weighted F1: 1.0
+
+For classifier: PER
+Average Accuracy: 0.5
+Average Macro F1: 0.23361702127659578
+Average Weighted F1: 0.4669787234042554
+
+For classifier: Base-MLP
+Average Accuracy: 0.66
+Average Macro F1: 0.288421052631579
+Average Weighted F1: 0.5698947368421052
+
+For classifier: Top-MLP with activation: tanh, solver: adam, network arch.: [30, 50]
+Average Accuracy: 0.8400000000000001
+Average Macro F1: 0.6896621896621895
+Average Weighted F1: 0.8026455026455025
+
+
+
+=== All Standard Deviation Per Class ===
+
+For classifier: NB
+Average Accuracy: 1.1102230246251565e-16
+Average Macro F1: 0.0
+Average Weighted F1: 0.0
+
+For classifier: Base-DT
+Average Accuracy: 0.0
+Average Macro F1: 0.0
+Average Weighted F1: 0.0
+
+For classifier: Top-DT with criterion: entropy, max_depth: [5, 10], min_samples_split: [2, 4, 6]
+Average Accuracy: 0.0
+Average Macro F1: 0.0
+Average Weighted F1: 0.0
+
+For classifier: PER
+Average Accuracy: 0.0
+Average Macro F1: 0.0
+Average Weighted F1: 5.551115123125783e-17
+
+For classifier: Base-MLP
+Average Accuracy: 0.0
+Average Macro F1: 5.551115123125783e-17
+Average Weighted F1: 0.0
+
+For classifier: Top-MLP with activation: tanh, solver: adam, network arch.: [30, 50]
+Average Accuracy: 1.1102230246251565e-16
+Average Macro F1: 1.1102230246251565e-16
+Average Weighted F1: 1.1102230246251565e-16
+

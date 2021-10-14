@@ -4,7 +4,7 @@ import drug_classification as dc
 
 def main():
     # tc.prep_classifier_for_analysis()
-    dc.run_classifiers()
+    dc.output_results()
 
 
 # Always at the bottom of the file and will call main()

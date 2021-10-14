@@ -2,6 +2,7 @@ import pandas
 import matplotlib.pyplot as plt
 from sklearn import *
 import sklearn
+import numpy as np
 
 
 dataset_file = "./Documents/drug200.csv"
@@ -49,11 +50,12 @@ def get_performance_metrics(classifier, x_test, y_test):
     metrics['accuracy_score'] = sklearn.metrics.accuracy_score(y_test, predicted_y)
     metrics['f1_score_macro'] = sklearn.metrics.f1_score(y_test, predicted_y, average='macro')
     metrics['f1_score_weighted'] = sklearn.metrics.f1_score(y_test, predicted_y, average='weighted')
+    metrics['precision'] = sklearn.metrics.precision_score(y_test, predicted_y, average='macro')
+    metrics['recall'] = sklearn.metrics.recall_score(y_test, predicted_y, average='macro')
     return metrics
 
 
 def run_classifiers():
-
     x_train, x_test, y_train, y_test = preprocess_data()
     
     # 6.a Gaussian Naive Bayes
@@ -98,6 +100,69 @@ def run_classifiers():
 
     # Used to get the best values for TOP_MLP (6.f); Uncomment to run
     # testing_best_parameters_for_top_mlp(x_train, y_train, x_test, y_test)
+
+    return [nb_metrics, b_dt_metrics, t_dt_metrics, perceptron_metrics, MLP_metrics, top_MLP_metrics]
+
+
+# For 7 and 8
+def output_results():
+    list_of_metrics = run_classifiers()
+    all_results = [[[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []]]
+    # gets accuracy, f1 macro, f1 weighted into an array for calculation
+    for i in range(10):
+        current_metrics = run_classifiers()
+        if i is 0:
+            list_of_metrics = current_metrics
+        for index, classifier_metric in enumerate(list_of_metrics):
+            all_results[index][0].append(classifier_metric["accuracy_score"])
+            all_results[index][1].append(classifier_metric["f1_score_macro"])
+            all_results[index][2].append(classifier_metric["f1_score_weighted"])
+    # average of all scores for each classifier
+    all_averages = [[-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1]]
+    for classifier_index, classifier_scores in enumerate(all_results):
+        for score_index, scores in enumerate(classifier_scores):
+            all_averages[classifier_index][score_index] = np.average(scores)
+    # standard deviation of all scores for each classifier
+    all_std = [[-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1]]
+    for classifier_index, classifier_scores in enumerate(all_results):
+        for score_index, scores in enumerate(classifier_scores):
+            all_std[classifier_index][score_index] = np.std(scores)
+
+    with open('./Output/drugs-performance.txt', 'w+') as file:
+        order_of_metrics = ['NB', 'Base-DT', 'Top-DT with criterion: entropy, max_depth: [5, 10], min_samples_split: [2, 4, 6]',
+                            'PER', 'Base-MLP', 'Top-MLP with activation: tanh, solver: adam, network arch.: [30, 50]']
+        for index, classifier_metric in enumerate(list_of_metrics):
+            file.write(f'a) {order_of_metrics[index]} ============================================\n')
+            file.write(f'b) Confusion Matrix\n{classifier_metric["confusion_matrix"]}\n')
+            classification_report = classifier_metric['classification_report']
+            file.write(f'c)\n')
+            for key_index, key in enumerate(classification_report):
+                # only get the class values
+                if key_index > 4:
+                    break
+                file.write(f'class {key}: \n')
+                file.write(f'\t Precision: {str(classification_report[key]["precision"])}\n' +
+                           f'\t Recall: {str(classification_report[key]["recall"])}\n' +
+                           f'\t F1-Measure: {str(classification_report[key]["f1-score"])}\n')
+            file.write(f'd) \n' +
+                       f'\t Accuracy: {str(classifier_metric["accuracy_score"])}\n' +
+                       f'\t Macro-Average F1-Score: {str(classifier_metric["f1_score_macro"])}\n' +
+                       f'\t Weighted-Average F1-Score: {str(classifier_metric["f1_score_weighted"])}\n')
+            file.write('\n\n')
+        # end
+        file.write('\n\n=== All Averages Per Class ===\n\n')
+        for index, average_values in enumerate(all_averages):
+            file.write(f'For classifier: {order_of_metrics[index]}\n')
+            file.write(f'Average Accuracy: {str(average_values[0])}\n')
+            file.write(f'Average Macro F1: {str(average_values[1])}\n')
+            file.write(f'Average Weighted F1: {str(average_values[2])}\n\n')
+
+        file.write('\n\n=== All Standard Deviation Per Class ===\n\n')
+        for index, std_values in enumerate(all_std):
+            file.write(f'For classifier: {order_of_metrics[index]}\n')
+            file.write(f'Average Accuracy: {str(std_values[0])}\n')
+            file.write(f'Average Macro F1: {str(std_values[1])}\n')
+            file.write(f'Average Weighted F1: {str(std_values[2])}\n\n')
 
 
 def testing_best_parameters_for_top_mlp(x_train, y_train, x_test, y_test):
