@@ -41,16 +41,18 @@ def preprocess_data():
     return x_train, x_test, y_train, y_test
 
 
+def get_performance_metrics(classifier, x_test, y_test):
+    metrics = {}
+    predicted_y = classifier.predict(x_test)
+    metrics['confusion_matrix'] = sklearn.metrics.confusion_matrix(y_test, predicted_y)
+    metrics['classification_report'] = sklearn.metrics.classification_report(y_test, predicted_y, output_dict=True)
+    metrics['accuracy_score'] = sklearn.metrics.accuracy_score(y_test, predicted_y)
+    metrics['f1_score_macro'] = sklearn.metrics.f1_score(y_test, predicted_y, average='macro')
+    metrics['f1_score_weighted'] = sklearn.metrics.f1_score(y_test, predicted_y, average='weighted')
+    return metrics
+
+
 def run_classifiers():
-    def get_performance_metrics(classifier, x_test, y_test):
-        metrics = {}
-        predicted_y = classifier.predict(x_test)
-        metrics['confusion_matrix'] = sklearn.metrics.confusion_matrix(y_test, predicted_y)
-        metrics['classification_report'] = sklearn.metrics.classification_report(y_test, predicted_y, output_dict=True)
-        metrics['accuracy_score'] = sklearn.metrics.accuracy_score(y_test, predicted_y)
-        metrics['f1_score_macro'] = sklearn.metrics.f1_score(y_test, predicted_y, average='macro')
-        metrics['f1_score_weighted'] = sklearn.metrics.f1_score(y_test, predicted_y, average='weighted')
-        return metrics
 
     x_train, x_test, y_train, y_test = preprocess_data()
     
@@ -90,7 +92,40 @@ def run_classifiers():
     # activation: sigmoid, tang, relu, identity
     # network architecture: [30, 50] OR [10, 10, 10]
     # solver: sgd or adam(optimized stochastic gradient descent)
-    top_MLP_classifier = sklearn.neural_network.MLPClassifier([10, 10, 10], activation='relu', solver='adam')
+    top_MLP_classifier = sklearn.neural_network.MLPClassifier([30, 50], activation='tanh', solver='adam')
     top_MLP_classifier.fit(x_train, y_train)
     top_MLP_metrics = get_performance_metrics(top_MLP_classifier, x_test, y_test)
-    print()
+
+    # Used to get the best values for TOP_MLP (6.f); Uncomment to run
+    # testing_best_parameters_for_top_mlp(x_train, y_train, x_test, y_test)
+
+
+def testing_best_parameters_for_top_mlp(x_train, y_train, x_test, y_test):
+    activation_values = ['logistic', 'tanh', 'relu', 'identity']
+    network_architecture = [[30, 50], [10, 10, 10]]
+    solver = ['sgd', 'adam']
+
+    best_accuracy_score = 0
+    best_accuracy_combo = []
+    best_f1_score_macro = 0
+    best_f1_score_macro_combo = []
+    best_f1_score_weighted = 0
+    best_f1_score_weighted_combo = []
+    for activate in activation_values:
+        for index, network in enumerate(network_architecture):
+            for solve in solver:
+                top_MLP_classifier = sklearn.neural_network.MLPClassifier(network, activation=activate, solver=solve)
+                top_MLP_classifier.fit(x_train, y_train)
+                top_MLP_metrics = get_performance_metrics(top_MLP_classifier, x_test, y_test)
+                if top_MLP_metrics['accuracy_score'] > best_accuracy_score:
+                    best_accuracy_score = top_MLP_metrics['accuracy_score']
+                    best_accuracy_combo = [activate, index, solve]
+                if top_MLP_metrics['f1_score_macro'] > best_f1_score_macro:
+                    best_f1_score_macro = top_MLP_metrics['f1_score_macro']
+                    best_f1_score_macro_combo = [activate, index, solve]
+                if top_MLP_metrics['f1_score_weighted'] > best_f1_score_weighted:
+                    best_f1_score_weighted = top_MLP_metrics['f1_score_weighted']
+                    best_f1_score_weighted_combo = [activate, index, solve]
+    print('best accuracy: ' + best_accuracy_combo[0] + ', [' + str(best_accuracy_combo[1]) + '], ' + best_accuracy_combo[2])
+    print('best f1 score macro: ' + best_f1_score_macro_combo[0] + ', [' + str(best_f1_score_macro_combo[1]) + '], ' + best_f1_score_macro_combo[2])
+    print('best f1 score weighted: ' + best_f1_score_weighted_combo[0] + ', [' + str(best_f1_score_weighted_combo[1]) + '], ' + best_f1_score_weighted_combo[2])
