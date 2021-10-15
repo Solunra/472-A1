@@ -1,3 +1,15 @@
-The averages of each classifier's accuracy and f1s outputs similar values to the values first recorded.
-Furthermore, the standard deviation of each of those values are of values near 0 or 0 itself. This would imply that
-there are very small changes in accuracy and f1 scores, but each run would output very similar values.
+The averages of each classifier's metrics (accuracy, f1, weighted f1) are similar to the scores recorded in the first run.
+Furthermore, the standard deviation of each of those values are of values are 0 or close to 0. This implies that
+there are very small changes in accuracy and f1 scores between different runs.
+
+Concerning the Naive Bayes classifier, while the standard deviation for the standard deviation for all metrics across all runs is 0 or close to 0,
+The classifier itself does not perform well as can be seen through its average metrics. This means that the classifier is consistently
+poor.
+
+For both decision trees, both classifiers have a low (or 0) standard deviation for all metrics across all runs, meaning that their performance
+is consistent. This performance is great, as seen in the average of metrics and in the first run.
+
+For the Perceptron and the Base Multi-Layered Perceptron, while the average metrics are not great, they do not vary a lot between runs given the standard deviation scores.
+
+Finally, the Top Multi-Layered Perceptron has the best average scores out of the 3 perceptrons, and its standard deviations are also low, meaning that this 
+behaviour is consistent across runs. 
