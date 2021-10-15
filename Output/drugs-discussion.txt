@@ -1,0 +1,3 @@
+The averages of each classifier's accuracy and f1s outputs similar values to the values first recorded.
+Furthermore, the standard deviation of each of those values are of values near 0 or 0 itself. This would imply that
+there are very small changes in accuracy and f1 scores, but each run would output very similar values.

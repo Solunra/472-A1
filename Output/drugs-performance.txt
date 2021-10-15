@@ -1,44 +1,44 @@
 a) NB ============================================
 b) Confusion Matrix
-[[ 1  1  0  1  1]
- [ 0  3  0  1  0]
- [ 0  0  0  3  2]
- [ 0  0  0  9  2]
- [ 0  0  0  5 21]]
+[[ 2  0  0  1  1]
+ [ 0  1  0  3  0]
+ [ 0  0  0  7  1]
+ [ 0  0  0  7  4]
+ [ 0  0  0  6 17]]
 c)
 class drugA: 
 	 Precision: 1.0
+	 Recall: 0.5
+	 F1-Measure: 0.6666666666666666
+class drugB: 
+	 Precision: 1.0
 	 Recall: 0.25
 	 F1-Measure: 0.4
-class drugB: 
-	 Precision: 0.75
-	 Recall: 0.75
-	 F1-Measure: 0.75
 class drugC: 
 	 Precision: 0.0
 	 Recall: 0.0
 	 F1-Measure: 0.0
 class drugX: 
-	 Precision: 0.47368421052631576
-	 Recall: 0.8181818181818182
-	 F1-Measure: 0.6
+	 Precision: 0.2916666666666667
+	 Recall: 0.6363636363636364
+	 F1-Measure: 0.4
 class drugY: 
-	 Precision: 0.8076923076923077
-	 Recall: 0.8076923076923077
-	 F1-Measure: 0.8076923076923077
+	 Precision: 0.7391304347826086
+	 Recall: 0.7391304347826086
+	 F1-Measure: 0.7391304347826085
 d) 
-	 Accuracy: 0.68
-	 Macro-Average F1-Score: 0.5115384615384615
-	 Weighted-Average F1-Score: 0.644
+	 Accuracy: 0.54
+	 Macro-Average F1-Score: 0.44115942028985505
+	 Weighted-Average F1-Score: 0.5133333333333333
 
 
 a) Base-DT ============================================
 b) Confusion Matrix
 [[ 4  0  0  0  0]
  [ 0  4  0  0  0]
- [ 0  0  5  0  0]
+ [ 0  0  8  0  0]
  [ 0  0  0 11  0]
- [ 0  0  0  0 26]]
+ [ 0  0  0  0 23]]
 c)
 class drugA: 
 	 Precision: 1.0
@@ -66,13 +66,13 @@ d)
 	 Weighted-Average F1-Score: 1.0
 
 
-a) Top-DT with criterion: entropy, max_depth: [5, 10], min_samples_split: [2, 4, 6] ============================================
+a) Top-DT with criterion: gini, max_depth: 5, min_samples_split: 2 ============================================
 b) Confusion Matrix
 [[ 4  0  0  0  0]
  [ 0  4  0  0  0]
- [ 0  0  5  0  0]
+ [ 0  0  8  0  0]
  [ 0  0  0 11  0]
- [ 0  0  0  0 26]]
+ [ 0  0  0  0 23]]
 c)
 class drugA: 
 	 Precision: 1.0
@@ -102,16 +102,16 @@ d)
 
 a) PER ============================================
 b) Confusion Matrix
-[[ 0  0  0  4  0]
+[[ 2  0  0  1  1]
  [ 0  0  0  4  0]
- [ 0  0  0  5  0]
- [ 0  0  0 11  0]
- [ 0  0  0 12 14]]
+ [ 0  0  0  7  1]
+ [ 0  0  0  6  5]
+ [ 0  0  0  2 21]]
 c)
 class drugA: 
-	 Precision: 0.0
-	 Recall: 0.0
-	 F1-Measure: 0.0
+	 Precision: 1.0
+	 Recall: 0.5
+	 F1-Measure: 0.6666666666666666
 class drugB: 
 	 Precision: 0.0
 	 Recall: 0.0
@@ -121,26 +121,26 @@ class drugC:
 	 Recall: 0.0
 	 F1-Measure: 0.0
 class drugX: 
-	 Precision: 0.3055555555555556
-	 Recall: 1.0
-	 F1-Measure: 0.46808510638297873
+	 Precision: 0.3
+	 Recall: 0.5454545454545454
+	 F1-Measure: 0.3870967741935483
 class drugY: 
-	 Precision: 1.0
-	 Recall: 0.5384615384615384
-	 F1-Measure: 0.7000000000000001
+	 Precision: 0.75
+	 Recall: 0.9130434782608695
+	 F1-Measure: 0.8235294117647057
 d) 
-	 Accuracy: 0.5
-	 Macro-Average F1-Score: 0.23361702127659578
-	 Weighted-Average F1-Score: 0.46697872340425534
+	 Accuracy: 0.58
+	 Macro-Average F1-Score: 0.3754585705249841
+	 Weighted-Average F1-Score: 0.5173181530676786
 
 
 a) Base-MLP ============================================
 b) Confusion Matrix
 [[ 0  0  0  1  3]
  [ 0  0  0  4  0]
- [ 0  0  0  3  2]
- [ 0  0  0  9  2]
- [ 0  0  0  2 24]]
+ [ 0  0  0  4  4]
+ [ 0  0  0  6  5]
+ [ 0  0  0  1 22]]
 c)
 class drugA: 
 	 Precision: 0.0
@@ -155,51 +155,51 @@ class drugC:
 	 Recall: 0.0
 	 F1-Measure: 0.0
 class drugX: 
-	 Precision: 0.47368421052631576
-	 Recall: 0.8181818181818182
-	 F1-Measure: 0.6
+	 Precision: 0.375
+	 Recall: 0.5454545454545454
+	 F1-Measure: 0.4444444444444444
 class drugY: 
-	 Precision: 0.7741935483870968
-	 Recall: 0.9230769230769231
-	 F1-Measure: 0.8421052631578947
+	 Precision: 0.6470588235294118
+	 Recall: 0.9565217391304348
+	 F1-Measure: 0.7719298245614036
 d) 
-	 Accuracy: 0.66
-	 Macro-Average F1-Score: 0.28842105263157897
-	 Weighted-Average F1-Score: 0.5698947368421052
+	 Accuracy: 0.56
+	 Macro-Average F1-Score: 0.2432748538011696
+	 Weighted-Average F1-Score: 0.4528654970760234
 
 
 a) Top-MLP with activation: tanh, solver: adam, network arch.: [30, 50] ============================================
 b) Confusion Matrix
-[[ 3  1  0  0  0]
+[[ 4  0  0  0  0]
  [ 0  4  0  0  0]
- [ 0  0  0  5  0]
+ [ 0  0  0  8  0]
  [ 0  0  0 10  1]
- [ 0  0  0  1 25]]
+ [ 0  0  0  0 23]]
 c)
 class drugA: 
 	 Precision: 1.0
-	 Recall: 0.75
-	 F1-Measure: 0.8571428571428571
-class drugB: 
-	 Precision: 0.8
 	 Recall: 1.0
-	 F1-Measure: 0.888888888888889
+	 F1-Measure: 1.0
+class drugB: 
+	 Precision: 1.0
+	 Recall: 1.0
+	 F1-Measure: 1.0
 class drugC: 
 	 Precision: 0.0
 	 Recall: 0.0
 	 F1-Measure: 0.0
 class drugX: 
-	 Precision: 0.625
+	 Precision: 0.5555555555555556
 	 Recall: 0.9090909090909091
-	 F1-Measure: 0.7407407407407406
+	 F1-Measure: 0.6896551724137931
 class drugY: 
-	 Precision: 0.9615384615384616
-	 Recall: 0.9615384615384616
-	 F1-Measure: 0.9615384615384616
+	 Precision: 0.9583333333333334
+	 Recall: 1.0
+	 F1-Measure: 0.9787234042553191
 d) 
-	 Accuracy: 0.84
-	 Macro-Average F1-Score: 0.6896621896621896
-	 Weighted-Average F1-Score: 0.8026455026455026
+	 Accuracy: 0.82
+	 Macro-Average F1-Score: 0.7336757153338225
+	 Weighted-Average F1-Score: 0.7619369038884812
 
 
 
@@ -207,66 +207,66 @@ d)
 === All Averages Per Class ===
 
 For classifier: NB
-Average Accuracy: 0.6799999999999999
-Average Macro F1: 0.5115384615384615
-Average Weighted F1: 0.644
+Average Accuracy: 0.54
+Average Macro F1: 0.44115942028985505
+Average Weighted F1: 0.5133333333333334
 
 For classifier: Base-DT
 Average Accuracy: 1.0
 Average Macro F1: 1.0
 Average Weighted F1: 1.0
 
-For classifier: Top-DT with criterion: entropy, max_depth: [5, 10], min_samples_split: [2, 4, 6]
+For classifier: Top-DT with criterion: gini, max_depth: 5, min_samples_split: 2
 Average Accuracy: 1.0
 Average Macro F1: 1.0
 Average Weighted F1: 1.0
 
 For classifier: PER
-Average Accuracy: 0.5
-Average Macro F1: 0.23361702127659578
-Average Weighted F1: 0.4669787234042554
+Average Accuracy: 0.58
+Average Macro F1: 0.3754585705249841
+Average Weighted F1: 0.5173181530676787
 
 For classifier: Base-MLP
-Average Accuracy: 0.66
-Average Macro F1: 0.288421052631579
-Average Weighted F1: 0.5698947368421052
+Average Accuracy: 0.5600000000000002
+Average Macro F1: 0.24327485380116962
+Average Weighted F1: 0.45286549707602336
 
 For classifier: Top-MLP with activation: tanh, solver: adam, network arch.: [30, 50]
-Average Accuracy: 0.8400000000000001
-Average Macro F1: 0.6896621896621895
-Average Weighted F1: 0.8026455026455025
+Average Accuracy: 0.82
+Average Macro F1: 0.7336757153338225
+Average Weighted F1: 0.7619369038884811
 
 
 
 === All Standard Deviation Per Class ===
 
 For classifier: NB
-Average Accuracy: 1.1102230246251565e-16
-Average Macro F1: 0.0
-Average Weighted F1: 0.0
+Standard Deviation of Accuracy: 0.0
+Standard Deviation of Macro F1: 0.0
+Standard Deviation of Weighted F1: 1.1102230246251565e-16
 
 For classifier: Base-DT
-Average Accuracy: 0.0
-Average Macro F1: 0.0
-Average Weighted F1: 0.0
+Standard Deviation of Accuracy: 0.0
+Standard Deviation of Macro F1: 0.0
+Standard Deviation of Weighted F1: 0.0
 
-For classifier: Top-DT with criterion: entropy, max_depth: [5, 10], min_samples_split: [2, 4, 6]
-Average Accuracy: 0.0
-Average Macro F1: 0.0
-Average Weighted F1: 0.0
+For classifier: Top-DT with criterion: gini, max_depth: 5, min_samples_split: 2
+Standard Deviation of Accuracy: 0.0
+Standard Deviation of Macro F1: 0.0
+Standard Deviation of Weighted F1: 0.0
 
 For classifier: PER
-Average Accuracy: 0.0
-Average Macro F1: 0.0
-Average Weighted F1: 5.551115123125783e-17
+Standard Deviation of Accuracy: 0.0
+Standard Deviation of Macro F1: 0.0
+Standard Deviation of Weighted F1: 1.1102230246251565e-16
 
 For classifier: Base-MLP
-Average Accuracy: 0.0
-Average Macro F1: 5.551115123125783e-17
-Average Weighted F1: 0.0
+Standard Deviation of Accuracy: 1.1102230246251565e-16
+Standard Deviation of Macro F1: 2.7755575615628914e-17
+Standard Deviation of Weighted F1: 5.551115123125783e-17
 
 For classifier: Top-MLP with activation: tanh, solver: adam, network arch.: [30, 50]
-Average Accuracy: 1.1102230246251565e-16
-Average Macro F1: 1.1102230246251565e-16
-Average Weighted F1: 1.1102230246251565e-16
+Standard Deviation of Accuracy: 0.0
+Standard Deviation of Macro F1: 0.0
+Standard Deviation of Weighted F1: 1.1102230246251565e-16
 

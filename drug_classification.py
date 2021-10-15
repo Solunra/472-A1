@@ -71,7 +71,7 @@ def run_classifiers():
     # 6.c Top-DT
     # values required to play around with:
     # tree_parameters = {'criterion': ['gini' OR 'entropy'], 'max_depth': [2 values], 'min_samples_split': [3 values]}
-    tree_parameters = {'criterion': ['entropy'], 'max_depth': [5, 10], 'min_samples_split': [2, 4, 6]}
+    tree_parameters = {'criterion': ['gini', 'entropy'], 'max_depth': [5, 10], 'min_samples_split': [2, 4, 6]}
     t_raw_dt_classifier = sklearn.tree.DecisionTreeClassifier()
     t_dt_classifier = sklearn.model_selection.GridSearchCV(t_raw_dt_classifier, tree_parameters)
     t_dt_classifier.fit(x_train, y_train)
@@ -94,23 +94,22 @@ def run_classifiers():
     # activation: sigmoid, tang, relu, identity
     # network architecture: [30, 50] OR [10, 10, 10]
     # solver: sgd or adam(optimized stochastic gradient descent)
-    top_MLP_classifier = sklearn.neural_network.MLPClassifier([30, 50], activation='tanh', solver='adam')
+    mlp_parameters = {'activation': ['logistic', 'tanh', 'relu', 'identity'], 'hidden_layer_sizes': [[30, 50], [10, 10, 10]], 'solver': ['sgd', 'adam']}
+    raw_top_MLP_classifier = sklearn.neural_network.MLPClassifier()
+    top_MLP_classifier = sklearn.model_selection.GridSearchCV(raw_top_MLP_classifier, mlp_parameters)
     top_MLP_classifier.fit(x_train, y_train)
     top_MLP_metrics = get_performance_metrics(top_MLP_classifier, x_test, y_test)
 
-    # Used to get the best values for TOP_MLP (6.f); Uncomment to run
-    # testing_best_parameters_for_top_mlp(x_train, y_train, x_test, y_test)
-
-    return [nb_metrics, b_dt_metrics, t_dt_metrics, perceptron_metrics, MLP_metrics, top_MLP_metrics]
+    return [nb_metrics, b_dt_metrics, t_dt_metrics, perceptron_metrics, MLP_metrics, top_MLP_metrics], t_dt_classifier.best_params_, top_MLP_classifier.best_params_
 
 
 # For 7 and 8
 def output_results():
-    list_of_metrics = run_classifiers()
+    list_of_metrics, dt_params, mlp_params = run_classifiers()
     all_results = [[[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []], [[], [], []]]
     # gets accuracy, f1 macro, f1 weighted into an array for calculation
     for i in range(10):
-        current_metrics = run_classifiers()
+        current_metrics, _, _ = run_classifiers()
         if i is 0:
             list_of_metrics = current_metrics
         for index, classifier_metric in enumerate(list_of_metrics):
@@ -129,8 +128,8 @@ def output_results():
             all_std[classifier_index][score_index] = np.std(scores)
 
     with open('./Output/drugs-performance.txt', 'w+') as file:
-        order_of_metrics = ['NB', 'Base-DT', 'Top-DT with criterion: entropy, max_depth: [5, 10], min_samples_split: [2, 4, 6]',
-                            'PER', 'Base-MLP', 'Top-MLP with activation: tanh, solver: adam, network arch.: [30, 50]']
+        order_of_metrics = ['NB', 'Base-DT', f'Top-DT with criterion: {str(dt_params["criterion"])}, max_depth: {str(dt_params["max_depth"])}, min_samples_split: {str(dt_params["min_samples_split"])}',
+                            'PER', 'Base-MLP', f'Top-MLP with activation: {str(mlp_params["activation"])}, solver: {str(mlp_params["solver"])}, network arch.: {str(mlp_params["hidden_layer_sizes"])}']
         for index, classifier_metric in enumerate(list_of_metrics):
             file.write(f'a) {order_of_metrics[index]} ============================================\n')
             file.write(f'b) Confusion Matrix\n{classifier_metric["confusion_matrix"]}\n')
@@ -160,37 +159,7 @@ def output_results():
         file.write('\n\n=== All Standard Deviation Per Class ===\n\n')
         for index, std_values in enumerate(all_std):
             file.write(f'For classifier: {order_of_metrics[index]}\n')
-            file.write(f'Average Accuracy: {str(std_values[0])}\n')
-            file.write(f'Average Macro F1: {str(std_values[1])}\n')
-            file.write(f'Average Weighted F1: {str(std_values[2])}\n\n')
+            file.write(f'Standard Deviation of Accuracy: {str(std_values[0])}\n')
+            file.write(f'Standard Deviation of Macro F1: {str(std_values[1])}\n')
+            file.write(f'Standard Deviation of Weighted F1: {str(std_values[2])}\n\n')
 
-
-def testing_best_parameters_for_top_mlp(x_train, y_train, x_test, y_test):
-    activation_values = ['logistic', 'tanh', 'relu', 'identity']
-    network_architecture = [[30, 50], [10, 10, 10]]
-    solver = ['sgd', 'adam']
-
-    best_accuracy_score = 0
-    best_accuracy_combo = []
-    best_f1_score_macro = 0
-    best_f1_score_macro_combo = []
-    best_f1_score_weighted = 0
-    best_f1_score_weighted_combo = []
-    for activate in activation_values:
-        for index, network in enumerate(network_architecture):
-            for solve in solver:
-                top_MLP_classifier = sklearn.neural_network.MLPClassifier(network, activation=activate, solver=solve)
-                top_MLP_classifier.fit(x_train, y_train)
-                top_MLP_metrics = get_performance_metrics(top_MLP_classifier, x_test, y_test)
-                if top_MLP_metrics['accuracy_score'] > best_accuracy_score:
-                    best_accuracy_score = top_MLP_metrics['accuracy_score']
-                    best_accuracy_combo = [activate, index, solve]
-                if top_MLP_metrics['f1_score_macro'] > best_f1_score_macro:
-                    best_f1_score_macro = top_MLP_metrics['f1_score_macro']
-                    best_f1_score_macro_combo = [activate, index, solve]
-                if top_MLP_metrics['f1_score_weighted'] > best_f1_score_weighted:
-                    best_f1_score_weighted = top_MLP_metrics['f1_score_weighted']
-                    best_f1_score_weighted_combo = [activate, index, solve]
-    print('best accuracy: ' + best_accuracy_combo[0] + ', [' + str(best_accuracy_combo[1]) + '], ' + best_accuracy_combo[2])
-    print('best f1 score macro: ' + best_f1_score_macro_combo[0] + ', [' + str(best_f1_score_macro_combo[1]) + '], ' + best_f1_score_macro_combo[2])
-    print('best f1 score weighted: ' + best_f1_score_weighted_combo[0] + ', [' + str(best_f1_score_weighted_combo[1]) + '], ' + best_f1_score_weighted_combo[2])
